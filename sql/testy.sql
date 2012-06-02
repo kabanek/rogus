@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 01 Cze 2012, 20:55
+-- Czas wygenerowania: 02 Cze 2012, 16:54
 -- Wersja serwera: 5.5.22
 -- Wersja PHP: 5.3.10-1ubuntu3.1
 
@@ -19,6 +19,20 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `testy`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `config`
+--
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `config` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `config` (`config`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -175,8 +189,8 @@ ALTER TABLE `user_test`
 -- Ograniczenia dla tabeli `user_test_answer`
 --
 ALTER TABLE `user_test_answer`
-  ADD CONSTRAINT `user_test_answer_ibfk_2` FOREIGN KEY (`question`) REFERENCES `question` (`id`),
-  ADD CONSTRAINT `user_test_answer_ibfk_1` FOREIGN KEY (`user_test`) REFERENCES `user_test` (`id`);
+  ADD CONSTRAINT `user_test_answer_ibfk_1` FOREIGN KEY (`user_test`) REFERENCES `user_test` (`id`),
+  ADD CONSTRAINT `user_test_answer_ibfk_2` FOREIGN KEY (`question`) REFERENCES `question` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
