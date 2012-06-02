@@ -6,20 +6,20 @@
 <script language="javascript">var image_pre_load='#x12h8192';</script>
 <meta name="description" content="Happy Family" />
 <meta name="keywords" content="Happy Family" />
-<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $this->baseUrl('css/style.css') ?>" rel="stylesheet" type="text/css" />
 </head>
 
-<body onLoad='f();'><script language="javascript" src="images/menu.js"></script>
+<body onLoad='f();'><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
 
 <div id="wrapper">
 
 <!-- header -->
   <div class="header">
-    <div class="headertop"><img src="images/spacer.gif" alt="" border="0" /></div>
-    <div class="floatleft logo"><a href="index.html" title="Home"><img src="images/logo.jpg" alt="Home" border="0" /></a></div>
-    <div class="floatleft head2"><img src="images/innerhead.jpg" alt="" width="580" border="0" /></div>
+    <div class="headertop"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+    <div class="floatleft logo"><a href="<?php echo $this->baseUrl('') ?>" title="Home"><img src="<?php echo $this->baseUrl('images/logo.jpg') ?>" alt="Home" border="0" /></a></div>
+    <div class="floatleft head2"><img src="<?php echo $this->baseUrl('images/innerhead.jpg') ?>" alt="" width="580" border="0" /></div>
   </div>
-  <div class="header"><img src="images/innerhead2.jpg" alt="" border="0" /></div>
+  <div class="header"><img src="<?php echo $this->baseUrl('images/innerhead2.jpg') ?>" alt="" border="0" /></div>
 <!-- /header -->
 
 <!-- middlecontent -->  
@@ -30,36 +30,41 @@
             <div class="floatleft menucontainerlightblue">
             <div class="menubg">   
                 <ul>
-                  <li><a href="<?php echo $this->baseUrl() ?>" class="home">&nbsp;</a></li>
+                  <li><a href="<?php echo $this->baseUrl('') ?>" class="home">&nbsp;</a></li>
+                  
+                 <?php if ($this->loggedIn):?>
+                  <li><a href="<?php echo $this->url(array('action' => 'logout', 'controller' => 'user'), NULL, 'default') ?>">Wyloguj</a></li>
+                 <?php endif ?>
                 </ul>     
             </div>
-            <div class="floatleft phonenumber"><img src="images/phonenumber.jpg" alt="" border="0" /></div>
+            <div class="floatleft phonenumber"><img src="<?php echo $this->baseUrl('images/phonenumber.jpg') ?>" alt="" border="0" /></div>
             
-            <div class="innerspacer1"><img src="images/spacer.gif" alt="" border="0" /></div>
-            <div class="innerspacer2"><img src="images/spacer.gif" alt="" border="0" /></div>
+            <div class="innerspacer1"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+            <div class="innerspacer2"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
      </div>
-     
-     
      
   </div>
   
-     <div class="innerspacer3"><img src="images/spacer.gif" alt="" border="0" /></div>
+     <div class="innerspacer3"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
      
-     <div class="innerspacerdiv1"><img src="images/spacer.gif" alt="" border="0" /></div>
+     <div class="innerspacerdiv1"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
      <div class="innerleft">
-       <div class="product_division"><img src="images/product_division.jpg" alt="" border="0" /></div>
+       <div class="product_division"><img src="<?php echo $this->baseUrl('images/product_division.jpg') ?>" alt="" border="0" /></div>
        
-       <div class="innerround"><img src="images/innerround.jpg" alt="" border="0" /></div>
+       <div class="innerround"><img src="<?php echo $this->baseUrl('images/innerround.jpg') ?>" alt="" border="0" /></div>
+       
+       <?php if (isset($this->login_form)) :?>
        <div class="innercontentleft">         
          <div class="main_con">
-         <a class="fontbold" href="#">Dupa</a><br />
-         dupa dupa duap
+         <a class="fontbold" href="#">Logowanie</a><br />
+			<form method="post" action="<?php echo $this->url(array('action' => 'login', 'controller' => 'user'), NULL, 'default') ?>">
+			    <?php echo $this->login_form ?>
+			</form>
          </div>       
        </div>
-       
-       
-       
-       <div class="innerleft2"><img src="images/innerleft2.jpg" alt="" border="0" /></div>
+       <?php endif ?>
+              
+       <div class="innerleft2"><img src="<?php echo $this->baseUrl('images/innerleft2.jpg') ?>" alt="" border="0" /></div>
               
      </div>
 
@@ -71,7 +76,7 @@
         <?php echo $this->layout()->content; ?>
        </div>
      </div>
-     <div class="innerfooterspacer"><img src="images/spacer.gif" alt="" border="0" /></div>
+     <div class="innerfooterspacer"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
   </div>   
   
   </div> 
@@ -94,7 +99,7 @@
   </div>
 </div>
 
-<div class="innerfooterbottom"><img src="images/spacer.gif" alt="" border="0" /></div>
+<div class="innerfooterbottom"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
 
 </div>
 </body>

@@ -1,18 +1,11 @@
 <?php
 
-class IndexController extends Zend_Controller_Action
+require_once 'BaseController.php';
+
+class IndexController extends BaseController
 {
-
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
     public function indexAction()
     {
-        // action body
     }
-
-
 }
 
