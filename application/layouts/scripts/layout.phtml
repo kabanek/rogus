@@ -62,6 +62,13 @@
 			</form>
          </div>       
        </div>
+       <?php else: ?>
+       <div class="innercontentleft">         
+         <div class="main_con">
+         <a class="fontbold" href="#">Panel użytkownika</a><br />
+			Witaj <?php echo $this->userData['name'] ?> !
+         </div>       
+       </div>
        <?php endif ?>
               
        <div class="innerleft2"><img src="<?php echo $this->baseUrl('images/innerleft2.jpg') ?>" alt="" border="0" /></div>
