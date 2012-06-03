@@ -54,14 +54,16 @@
        <div class="innerround"><img src="<?php echo $this->baseUrl('images/innerround.jpg') ?>" alt="" border="0" /></div>
        
        <?php if (isset($this->login_form)) :?>
-       <div class="innercontentleft">         
-         <div class="main_con">
-         <a class="fontbold" href="#">Logowanie</a><br />
-			<form method="post" action="<?php echo $this->url(array('action' => 'login', 'controller' => 'user'), NULL, 'default') ?>">
-			    <?php echo $this->login_form ?>
-			</form>
-         </div>       
-       </div>
+	       <?php if (!$this->no_login_form) :?>
+	       <div class="innercontentleft">         
+	         <div class="main_con">
+	         <a class="fontbold" href="#">Logowanie</a><br />
+				<form method="post" action="<?php echo $this->url(array('action' => 'login', 'controller' => 'user'), NULL, 'default') ?>">
+				    <?php echo $this->login_form ?>
+				</form>
+	         </div>       
+	       </div>
+	       <?php endif?>
        <?php else: ?>
        <div class="innercontentleft">         
          <div class="main_con">

@@ -25,6 +25,7 @@ class UserController extends BaseController
 			}
 		}
 
+		$this->view->no_login_form = true;
 		$this->view->form = $form;
 	}
 
