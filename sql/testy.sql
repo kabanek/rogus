@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 02 Cze 2012, 16:54
+-- Czas wygenerowania: 03 Cze 2012, 22:48
 -- Wersja serwera: 5.5.22
 -- Wersja PHP: 5.3.10-1ubuntu3.1
 
@@ -28,11 +28,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `config` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `config` (`config`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `config` (`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Zrzut danych tabeli `config`
+--
+
+INSERT INTO `config` (`id`, `code`, `value`) VALUES
+(1, 'site/name', 'System do tworzenia testow'),
+(2, 'site/type', 'closed');
 
 -- --------------------------------------------------------
 
@@ -44,11 +52,20 @@ CREATE TABLE IF NOT EXISTS `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` text NOT NULL,
   `weight` int(11) NOT NULL COMMENT 'ile punktów warte jest to pytanie',
-  `category` int(11) NOT NULL,
+  `category` int(11) DEFAULT NULL,
   `file` varchar(255) NOT NULL,
+  `user` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `category` (`category`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `category` (`category`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Zrzut danych tabeli `question`
+--
+
+INSERT INTO `question` (`id`, `text`, `weight`, `category`, `file`, `user`) VALUES
+(6, 'Czy lubisz kabana?', 10, NULL, '', 1);
 
 -- --------------------------------------------------------
 
@@ -77,7 +94,15 @@ CREATE TABLE IF NOT EXISTS `question_option` (
   `correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question` (`question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Zrzut danych tabeli `question_option`
+--
+
+INSERT INTO `question_option` (`id`, `question`, `text`, `correct`) VALUES
+(7, 6, 'tak', 1),
+(8, 6, 'nie', 0);
 
 -- --------------------------------------------------------
 
@@ -165,13 +190,20 @@ CREATE TABLE IF NOT EXISTS `user_test_answer` (
 -- Ograniczenia dla tabeli `question`
 --
 ALTER TABLE `question`
-  ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`category`) REFERENCES `question_category` (`id`);
+  ADD CONSTRAINT `question_ibfk_1` FOREIGN KEY (`category`) REFERENCES `question_category` (`id`),
+  ADD CONSTRAINT `question_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
 
 --
 -- Ograniczenia dla tabeli `question_category`
 --
 ALTER TABLE `question_category`
   ADD CONSTRAINT `question_category_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+
+--
+-- Ograniczenia dla tabeli `question_option`
+--
+ALTER TABLE `question_option`
+  ADD CONSTRAINT `question_option_ibfk_1` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `test`
