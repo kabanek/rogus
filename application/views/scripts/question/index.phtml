@@ -1,0 +1,7 @@
+<h1>Lista Twoich pytań</h1>
+
+<ul>
+<?php foreach($this->questions as $question): ?>
+	<li>Pytanie: <strong><?php echo $this->escape($question['text']) ?></strong> (<?php echo $question['weight']?> pkt)</li>
+<?php endforeach ?>
+</ul>

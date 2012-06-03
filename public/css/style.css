@@ -642,3 +642,8 @@ form{ margin: 0px; padding: 0px;}
 	width: 882px;
 	height:20px;
 }
+
+.errors li {
+	color: red;
+	text-decoration: bold;
+}

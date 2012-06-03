@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Welcome To Security Company - Inner Page</title>
-<script language="javascript">var image_pre_load='#x12h8192';</script>
+<title><?php echo $this->config->getConfig('site/name') ?></title>
+<script language="javascript" src="<?php echo $this->baseUrl('js/jquery.min.js') ?>"></script>
 <meta name="description" content="Happy Family" />
 <meta name="keywords" content="Happy Family" />
 <link href="<?php echo $this->baseUrl('css/style.css') ?>" rel="stylesheet" type="text/css" />
 </head>
 
-<body onLoad='f();'><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
+<body onload='f();'><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
 
 <div id="wrapper">
 
@@ -69,6 +69,10 @@
          <div class="main_con">
          <a class="fontbold" href="#">Panel użytkownika</a><br />
 			Witaj <?php echo $this->userData['name'] ?> !
+			
+			<ul>
+				<li><a href="<?php echo $this->url(array('action' => 'new', 'controller' => 'question'), NULL, 'default') ?>">Utwórz nowe pytanie</a></li>
+			</ul>
          </div>       
        </div>
        <?php endif ?>

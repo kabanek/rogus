@@ -11,6 +11,11 @@ class BaseController extends Zend_Controller_Action
 	 * @var Application_Model_User
 	 */
 	protected $_user;
+	
+	/**
+	 * @var Application_Model_Config
+	 */
+	protected $_config;
 
 	/**
 	 * @var array
@@ -26,6 +31,7 @@ class BaseController extends Zend_Controller_Action
 	{
 		$this->_session = Zend_Registry::get('session');
 		$this->_user = new Application_Model_User;
+		$this->_config = $this->view->config = new Application_Model_Config;
 
 		if (intval($this->_session->userId)) {
 			$this->_userData = $this->_user->getAdapter()->select('u.*, g.*')
