@@ -16,8 +16,16 @@ class QuestionController extends BaseController
 			}
 		}
 		
-		$form = new Application_Form_Question_New;
+		$categoryTable = new Application_Model_Question_Category();
 		
+		$categories = array();
+		
+		foreach ($categoryTable->getUserCategories($this->_userData['id']) as $category) {
+			$categories[$category['id']] = $category['name'];
+		}
+		
+		$form = new Application_Form_Question_New($categories);
+				
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
 				
@@ -41,6 +49,7 @@ class QuestionController extends BaseController
 						'text'		=> $_POST['answer_' . ($i + 1)],
 						'correct'	=> $_POST['correct_answer_' . ($i + 1)] == '1' ? true : false,
 						'question'	=> $question_id,
+						'category'	=> $_POST['category'],
 					);
 					
 					$option->insert($optionData);
@@ -111,13 +120,22 @@ class QuestionController extends BaseController
 		
 		$options = $questionOptionTable->getByQuestion($this->_getParam('id'));
 		
-		$form = new Application_Form_Question_Edit();
+		$categoryTable = new Application_Model_Question_Category();
+		
+		$categories = array();
+		
+		foreach ($categoryTable->getUserCategories($this->_userData['id']) as $category) {
+			$categories[$category['id']] = $category['name'];
+		}
+		
+		$form = new Application_Form_Question_Edit($categories);
 		
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
 				$data = array(
 						'text' 		=> $_POST['text'],
 						'weight' 	=> $_POST['weight'],
+						'category'	=> $_POST['category'],
 				);
 				
 				$questionTable->update($data, 'id = ' . $this->_getParam('id'));
@@ -126,7 +144,8 @@ class QuestionController extends BaseController
 		} else {
 			$form->setDefaults(array(
 				'text'	=> $question['text'],
-				'weight'=> $question['weight']
+				'weight'=> $question['weight'],
+				'category'=> $question['category']
 			));
 		}
 		

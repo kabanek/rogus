@@ -4,9 +4,12 @@ class Application_Form_Question_New extends Zend_Form {
 	
 	protected $_count_answers;
 	
-	public function __construct($count_answers = 5)
+	protected $_categories;
+	
+	public function __construct(array $categories = array(), $count_answers = 5)
 	{
 		$this->_count_answers = $count_answers;
+		$this->_categories = $categories;
 		parent::__construct();
 	}
 	
@@ -25,6 +28,12 @@ class Application_Form_Question_New extends Zend_Form {
         		'required' => true,
         		'value'		=> '10',
         		'label'		=> 'Ilość punktów za pytanie'
+        ));
+        
+        $this->addElement('select', 'category', array(
+        		'required' => true,
+        		'label'		=> 'Kategoria',
+        		'multiOptions'	=> $this->_categories
         ));
         
         for ($i = 0; $i < $this->_count_answers; ++$i) {

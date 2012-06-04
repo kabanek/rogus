@@ -1,6 +1,14 @@
 <?php
 
 class Application_Form_Question_Edit extends Zend_Form {
+	
+	protected $_categories;
+	
+	public function __construct(array $categories = array())
+	{
+		$this->_categories = $categories;
+		parent::__construct();
+	}
 		
     function init()
     {
@@ -17,6 +25,12 @@ class Application_Form_Question_Edit extends Zend_Form {
         		'required' => true,
         		'value'		=> '10',
         		'label'		=> 'Ilość punktów za pytanie'
+        ));
+        
+        $this->addElement('select', 'category', array(
+        		'required' => true,
+        		'label'		=> 'Kategoria',
+        		'multiOptions'	=> $this->_categories
         ));
                 
         $this->addElement('file', 'file', array(

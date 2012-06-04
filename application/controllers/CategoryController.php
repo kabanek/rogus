@@ -47,9 +47,9 @@ class CategoryController extends BaseController
 			}
 		}
 		
-		$question = new Application_Model_Question_Category();
+		$categoryTable = new Application_Model_Question_Category();
 		
-		$this->view->categories = $question->getUserCategories($this->_userData['id']);
+		$this->view->categories = $categoryTable->getUserCategories($this->_userData['id']);
 	}
 	
 	public function removeAction()
