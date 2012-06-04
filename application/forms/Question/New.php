@@ -16,7 +16,9 @@ class Application_Form_Question_New extends Zend_Form {
 
         $this->addElement('textarea', 'text', array(
             'label' => 'Treść pytania',
-            'required' => true
+            'required' => true,
+        	'cols'		=> 60,
+        	'rows'		=> 4
        ));
         
         $this->addElement('text', 'weight', array(

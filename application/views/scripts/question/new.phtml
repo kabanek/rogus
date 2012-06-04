@@ -1,10 +1,10 @@
-<script type="text/javascript" src="<?php echo $this->baseUrl('js/classes/question.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/classes/category.js') ?>"></script>
 
 <?php echo $this->form ?>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$.question.initAddForm(<?php echo $this->form->count_answers->getValue() ?>);
+	$.category.initAddForm(<?php echo $this->form->count_answers->getValue() ?>);
 });
 	
 </script>

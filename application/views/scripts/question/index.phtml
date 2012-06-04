@@ -4,7 +4,7 @@
 <?php foreach($this->questions as $question): ?>
 	<li>
 		Pytanie: <strong><?php echo $this->escape($question['text']) ?></strong> (<?php echo $question['weight']?> pkt)
-		<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Edytuj</a>
+		<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Edytuj</a> |
 		<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
 	</li>
 <?php endforeach ?>
