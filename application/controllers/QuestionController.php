@@ -69,4 +69,22 @@ class QuestionController extends BaseController
 		
 		$this->view->questions = $question->getUserQuestions($this->_userData['id']);
 	}
+	
+	public function removeAction()
+	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
+		$question = new Application_Model_Question();
+		$question->remove($this->_getParam('id'), $this->_userData['id']);
+		
+		$this->_helper->redirector('index', 'question');
+	}
 }

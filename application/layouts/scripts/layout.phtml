@@ -4,6 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $this->config->getConfig('site/name') ?></title>
 <script language="javascript" src="<?php echo $this->baseUrl('js/jquery.min.js') ?>"></script>
+<script language="javascript">
+	$(document).ready(function(){
+		$('.confirm').click(function(){
+			if (!confirm('Na pewno?')) {
+				return false;
+			}
+		});
+	});
+</script>
 <meta name="description" content="Happy Family" />
 <meta name="keywords" content="Happy Family" />
 <link href="<?php echo $this->baseUrl('css/style.css') ?>" rel="stylesheet" type="text/css" />
@@ -72,6 +81,7 @@
 			
 			<ul>
 				<li><a href="<?php echo $this->url(array('action' => 'new', 'controller' => 'question'), NULL, 'default') ?>">Utwórz nowe pytanie</a></li>
+				<li><a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>">Istniejące pytania</a></li>
 			</ul>
          </div>       
        </div>
