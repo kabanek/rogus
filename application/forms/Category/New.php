@@ -12,7 +12,7 @@ class Application_Form_Category_New extends Zend_Form {
        ));
         
         $this->addElement('submit', 'submit', array(
-            'label' => 'Dodaj',
+            'label' => 'Zapisz',
         ));
 
         $this->addElement('hash', 'csrf', array(

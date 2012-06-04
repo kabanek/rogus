@@ -82,33 +82,27 @@ class CategoryController extends BaseController
 			}
 		}
 		
-		$questionTable = new Application_Model_Question;
-		$question = $questionTable->get($this->_getParam('id'), $this->_userData['id']);
+		$questionCategoryTable = new Application_Model_Question_Category;
+		$category = $questionCategoryTable->get($this->_getParam('id'), $this->_userData['id']);
 		
-		if (!$question) {
+		if (!$category) {
 			$this->_helper->redirector('index', 'question');
 		}
-		
-		$questionOptionTable = new Application_Model_Question_Option;
-		
-		$options = $questionOptionTable->getByQuestion($this->_getParam('id'));
-		
-		$form = new Application_Form_Question_Edit();
+				
+		$form = new Application_Form_Category_Edit();
 		
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
 				$data = array(
-						'text' 		=> $_POST['text'],
-						'weight' 	=> $_POST['weight'],
+						'name' 		=> $_POST['name'],
 				);
 				
-				$questionTable->update($data, 'id = ' . $this->_getParam('id'));
-				$this->_helper->redirector('index', 'question');
+				$questionCategoryTable->update($data, 'id = ' . $this->_getParam('id'));
+				$this->_helper->redirector('index', 'category');
 			}
 		} else {
 			$form->setDefaults(array(
-				'name'	=> $question['text'],
-				'weight'=> $question['weight']
+				'name'	=> $category['name'],
 			));
 		}
 		
