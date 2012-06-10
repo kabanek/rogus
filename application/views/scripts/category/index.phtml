@@ -1,18 +1,21 @@
 <h2>Lista Twoich kategorii</h2>
 
-<table>
-	<tr>
-		<th>Nazwa kategori</th>
-		<th>Akcje</th>
-	</tr>
-	
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Nazwa kategori</th>
+			<th>Akcje</th>
+		</tr>
+	</thead>
+	<tbody>
 	<?php foreach($this->categories as $category): ?>
-	<tr>
-		<td><?php echo $category['name']?></td>
-		<td>
-			<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>">Edytuj</a> |
-			<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
-		</td>
-	</tr>
+		<tr>
+			<td><?php echo $category['name']?></td>
+			<td>
+				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>">Edytuj</a> |
+				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+			</td>
+		</tr>
 	<?php endforeach ?>
+	</tbody>
 </table>

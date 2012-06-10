@@ -1,11 +1,26 @@
 <h1>Lista Twoich pytań</h1>
 
-<ul>
-<?php foreach($this->questions as $question): ?>
-	<li>
-		Pytanie: <strong><?php echo $this->escape($question['text']) ?></strong> (<?php echo $question['weight']?> pkt)
-		<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Edytuj</a> |
-		<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
-	</li>
-<?php endforeach ?>
-</ul>
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Lp.</th>
+			<th>Treść pytania</th>
+			<th>Ilość punktów</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php $i = 0 ?>
+	<?php foreach($this->questions as $question): ?>
+		<tr>
+			<td><?php echo ++$i ?></td>
+			<td><?php echo $this->escape($question['text']) ?></td>
+			<td><?php echo $question['weight']?></td>
+			<td>
+				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Edytuj</a> |
+				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+			</td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>
