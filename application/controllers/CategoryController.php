@@ -107,5 +107,35 @@ class CategoryController extends BaseController
 		}
 		
 		$this->view->form = $form;
+	}	
+	
+	public function questionsAction()
+	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
+		$questionCategoryTable = new Application_Model_Question_Category;
+		$category = $questionCategoryTable->get($this->_getParam('id'), $this->_userData['id']);
+		
+		if (!$category) {
+			$this->_helper->redirector('index', 'category');
+		}
+		
+		if ($category['user'] != $this->_userData['id']) {
+			$this->_helper->redirector('index', 'category');
+		}
+		
+		$questionTable = new Application_Model_Question();
+		
+		$this->view->questions = $questionTable->getUserQuestionsInCategory($this->_userData['id'], $this->_getParam('id'));
+		
+		$this->view->category = $category;
 	}
 }

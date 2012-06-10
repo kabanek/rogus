@@ -16,6 +16,20 @@ class Application_Model_Question extends Zend_Db_Table {
 	}
 	
 	/**
+	 *
+	 * @param integer $user_id
+	 * @param integer $category_id
+	 * @return array
+	 */
+	public function getUserQuestionsInCategory($user_id, $category_id)
+	{
+		return $this->select()
+		->where('user = ?', $user_id)
+		->where('category = ?', $category_id)
+		->query()->fetchAll();
+	}
+	
+	/**
 	 * Usuwa pytanie
 	 * @param integer $question_id
 	 * @param integer $user_id

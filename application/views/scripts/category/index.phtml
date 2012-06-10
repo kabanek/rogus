@@ -12,6 +12,7 @@
 		<tr>
 			<td><?php echo $category['name']?></td>
 			<td>
+				<a href="<?php echo $this->url(array('action' => 'questions', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>">Pokaż pytania</a> |
 				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>">Edytuj</a> |
 				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'category', 'id' => $category['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
 			</td>
