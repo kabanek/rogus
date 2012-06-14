@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 03 Cze 2012, 22:48
--- Wersja serwera: 5.5.22
+-- Czas wygenerowania: 14 Cze 2012, 16:38
+-- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.3.10-1ubuntu3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -58,14 +58,15 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Zrzut danych tabeli `question`
 --
 
 INSERT INTO `question` (`id`, `text`, `weight`, `category`, `file`, `user`) VALUES
-(6, 'Czy lubisz kabana?', 10, NULL, '', 1);
+(7, 'czy lubisz kabana?', 100, 4, '', 1),
+(8, 'A rogusia lubisz?', 10, 5, '', 1);
 
 -- --------------------------------------------------------
 
@@ -79,7 +80,15 @@ CREATE TABLE IF NOT EXISTS `question_category` (
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Zrzut danych tabeli `question_category`
+--
+
+INSERT INTO `question_category` (`id`, `name`, `user`) VALUES
+(4, 'Dupa', 1),
+(5, 'Lala2', 1);
 
 -- --------------------------------------------------------
 
@@ -94,15 +103,17 @@ CREATE TABLE IF NOT EXISTS `question_option` (
   `correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question` (`question`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Zrzut danych tabeli `question_option`
 --
 
 INSERT INTO `question_option` (`id`, `question`, `text`, `correct`) VALUES
-(7, 6, 'tak', 1),
-(8, 6, 'nie', 0);
+(9, 7, 'tak', 1),
+(10, 7, 'nie', 0),
+(11, 8, 'Tak', 0),
+(12, 8, 'Nie', 1);
 
 -- --------------------------------------------------------
 
