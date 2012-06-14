@@ -31,9 +31,10 @@ class QuestionController extends BaseController
 				
 				$question = new Application_Model_Question();
 				$questionData = array();
-				$questionData['text'] = $_POST['text'];
-				$questionData['weight'] = $_POST['weight'];
-				$questionData['user'] = $this->_userData['id'];
+				$questionData['text'] 		= $_POST['text'];
+				$questionData['weight'] 	= $_POST['weight'];
+				$questionData['user'] 		= $this->_userData['id'];
+				$questionData['category'] 	= $_POST['category'];
 				
 				$question->insert($questionData);
 				$question_id = $question->getAdapter()->lastInsertId();
@@ -49,7 +50,6 @@ class QuestionController extends BaseController
 						'text'		=> $_POST['answer_' . ($i + 1)],
 						'correct'	=> $_POST['correct_answer_' . ($i + 1)] == '1' ? true : false,
 						'question'	=> $question_id,
-						'category'	=> $_POST['category'],
 					);
 					
 					$option->insert($optionData);
