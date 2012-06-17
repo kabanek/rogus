@@ -146,6 +146,15 @@ class QuestionController extends BaseController
 						'category'	=> $_POST['category'],
 				);
 				
+				if (isset($_FILES['file'])) {
+					$file_name = uniqid('question_');
+					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/' . $file_name);
+						
+					$data['file'] = $file_name;
+					$data['file_mime'] = mime_content_type($_FILES['file']['tmp_name']);
+					$data['file_name'] = $_FILES['file']['name'];
+				}
+				
 				$questionTable->update($data, 'id = ' . $this->_getParam('id'));
 				
 				$questionOptionTable->deleteAllOptions($this->_getParam('id'));
@@ -154,7 +163,7 @@ class QuestionController extends BaseController
 					if (!$_POST['answer_' . ($i + 1)]) {
 						continue;
 					}
-						
+					
 					$optionData = array(
 							'text'		=> $_POST['answer_' . ($i + 1)],
 							'correct'	=> $_POST['correct_answer_' . ($i + 1)] == '1' ? true : false,
