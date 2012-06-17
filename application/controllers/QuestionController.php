@@ -28,13 +28,21 @@ class QuestionController extends BaseController
 				
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
-				
 				$question = new Application_Model_Question();
 				$questionData = array();
 				$questionData['text'] 		= $_POST['text'];
 				$questionData['weight'] 	= $_POST['weight'];
 				$questionData['user'] 		= $this->_userData['id'];
 				$questionData['category'] 	= $_POST['category'];
+				
+				if (isset($_FILES['file'])) {
+					$file_name = uniqid('question_');
+					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/' . $file_name);
+					
+					$questionData['file'] = $file_name;
+					$questionData['file_mime'] = mime_content_type($_FILES['file']['tmp_name']);
+					$questionData['file_name'] = $_FILES['file']['name'];
+				}
 				
 				$question->insert($questionData);
 				$question_id = $question->getAdapter()->lastInsertId();
@@ -150,5 +158,21 @@ class QuestionController extends BaseController
 		}
 		
 		$this->view->form = $form;
+	}
+	
+	public function attachementAction()
+	{
+		$questionTable = new Application_Model_Question;
+		$question = $questionTable->get($this->_getParam('id'), $this->_userData['id']);
+		
+		if ($question['file']) {
+			header('Content-type: ' . $question['file_mime']);
+			
+			// It will be called downloaded.pdf
+			header('Content-Disposition: attachment; filename="' . $question['file_mime'] . '"');
+			
+			// The PDF source is in original.pdf
+			readfile(BASE_PATH . '/' . $question['file']);
+		}
 	}
 }

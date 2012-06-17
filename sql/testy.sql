@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 14 Cze 2012, 16:38
+-- Czas wygenerowania: 17 Cze 2012, 09:17
 -- Wersja serwera: 5.5.24
--- Wersja PHP: 5.3.10-1ubuntu3.1
+-- Wersja PHP: 5.4.3-4~precise+1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -54,19 +54,23 @@ CREATE TABLE IF NOT EXISTS `question` (
   `weight` int(11) NOT NULL COMMENT 'ile punktów warte jest to pytanie',
   `category` int(11) DEFAULT NULL,
   `file` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_mime` varchar(255) DEFAULT NULL,
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Zrzut danych tabeli `question`
 --
 
-INSERT INTO `question` (`id`, `text`, `weight`, `category`, `file`, `user`) VALUES
-(7, 'czy lubisz kabana?', 100, 4, '', 1),
-(8, 'A rogusia lubisz?', 10, 5, '', 1);
+INSERT INTO `question` (`id`, `text`, `weight`, `category`, `file`, `file_name`, `file_mime`, `user`) VALUES
+(7, 'czy lubisz kabana?', 100, 5, '', '', NULL, 1),
+(8, 'A rogusia lubisz?', 10, 4, '', '', NULL, 1),
+(9, 'fdsfasf', 10, NULL, '', '', NULL, 1),
+(10, '222', 10, 4, '', '', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -80,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `question_category` (
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Zrzut danych tabeli `question_category`
@@ -88,7 +92,9 @@ CREATE TABLE IF NOT EXISTS `question_category` (
 
 INSERT INTO `question_category` (`id`, `name`, `user`) VALUES
 (4, 'Dupa', 1),
-(5, 'Lala2', 1);
+(5, 'Lala2', 1),
+(6, 'Lala', 1),
+(7, 'Lala2', 1);
 
 -- --------------------------------------------------------
 
@@ -103,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `question_option` (
   `correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question` (`question`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Zrzut danych tabeli `question_option`
@@ -113,7 +119,9 @@ INSERT INTO `question_option` (`id`, `question`, `text`, `correct`) VALUES
 (9, 7, 'tak', 1),
 (10, 7, 'nie', 0),
 (11, 8, 'Tak', 0),
-(12, 8, 'Nie', 1);
+(12, 8, 'Nie', 1),
+(13, 10, 'Tak', 1),
+(14, 10, 'nie', 0);
 
 -- --------------------------------------------------------
 
