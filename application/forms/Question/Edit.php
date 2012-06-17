@@ -3,9 +3,11 @@
 class Application_Form_Question_Edit extends Zend_Form {
 	
 	protected $_categories;
+	protected $_count_answers;
 	
-	public function __construct(array $categories = array())
+	public function __construct(array $categories = array(), $count_answers = 2)
 	{
+		$this->_count_answers = $count_answers;
 		$this->_categories = $categories;
 		parent::__construct();
 	}
@@ -31,6 +33,22 @@ class Application_Form_Question_Edit extends Zend_Form {
         		'required' => true,
         		'label'		=> 'Kategoria',
         		'multiOptions'	=> $this->_categories
+        ));
+        
+        for ($i = 0; $i < $this->_count_answers; ++$i) {
+        	$this->addElement('text', 'answer_' . ($i + 1), array(
+        			'label' => 'Odpowiedź nr ' . ($i + 1),
+        			'required' => $i < 2 ? true : false
+        	));
+        	 
+        	$this->addElement('checkbox', 'correct_answer_' . ($i + 1), array(
+        			'label' => 'Czy odpowiedź nr ' . ($i + 1) . ' jest prawidłową odpowiedzią?',
+        	));
+        }
+        
+        $this->addElement('hidden', 'count_answers', array(
+        		'required' => true,
+        		'value'		=> $this->_count_answers
         ));
                 
         $this->addElement('file', 'file', array(

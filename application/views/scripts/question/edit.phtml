@@ -1,3 +1,10 @@
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/classes/question.js') ?>"></script>
+
 <h2>Edycja pytania</h2>
 
+<div id="question-form">
 <?php echo $this->form ?>
+</div>
+<script type="text/javascript">
+$.question.initAddForm(<?php echo $this->form->count_answers->getValue() ?>);	
+</script>

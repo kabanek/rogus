@@ -6,7 +6,7 @@ class Application_Form_Question_New extends Zend_Form {
 	
 	protected $_categories;
 	
-	public function __construct(array $categories = array(), $count_answers = 5)
+	public function __construct(array $categories = array(), $count_answers = 2)
 	{
 		$this->_count_answers = $count_answers;
 		$this->_categories = $categories;

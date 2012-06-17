@@ -136,7 +136,7 @@ class QuestionController extends BaseController
 			$categories[$category['id']] = $category['name'];
 		}
 		
-		$form = new Application_Form_Question_Edit($categories);
+		$form = new Application_Form_Question_Edit($categories, count($options));
 		
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
@@ -147,6 +147,23 @@ class QuestionController extends BaseController
 				);
 				
 				$questionTable->update($data, 'id = ' . $this->_getParam('id'));
+				
+				$questionOptionTable->deleteAllOptions($this->_getParam('id'));
+				
+				for ($i = 0; $i < $_POST['count_answers']; ++$i) {
+					if (!$_POST['answer_' . ($i + 1)]) {
+						continue;
+					}
+						
+					$optionData = array(
+							'text'		=> $_POST['answer_' . ($i + 1)],
+							'correct'	=> $_POST['correct_answer_' . ($i + 1)] == '1' ? true : false,
+							'question'	=> $this->_getParam('id'),
+					);
+						
+					$questionOptionTable->insert($optionData);
+				}
+				
 				$this->_helper->redirector('index', 'question');
 			}
 		} else {
@@ -155,6 +172,17 @@ class QuestionController extends BaseController
 				'weight'=> $question['weight'],
 				'category'=> $question['category']
 			));
+			
+			$i = 1;
+			foreach ($options as $option) {
+				$form->setDefaults(array(
+						'answer_' . $i			=> $option['text'],
+						'correct_answer_' . $i 	=> $option['correct'],
+				));
+				
+				++$i;
+				echo $i;
+			}
 		}
 		
 		$this->view->form = $form;

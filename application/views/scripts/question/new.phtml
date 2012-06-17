@@ -1,7 +1,10 @@
 <script type="text/javascript" src="<?php echo $this->baseUrl('js/classes/question.js') ?>"></script>
 
-<?php echo $this->form ?>
+<h2>Nowe pytanie</h2>
 
+<div id="question-form">
+<?php echo $this->form ?>
+</div>
 <script type="text/javascript">
 $.question.initAddForm(<?php echo $this->form->count_answers->getValue() ?>);	
 </script>

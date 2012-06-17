@@ -11,7 +11,13 @@ class Application_Model_Question_Option extends Zend_Db_Table {
 	public function getByQuestion($question_id)
 	{
 		return $this->select()->where('question = ?', $question_id)
+			->order('id ASC')
 			->query()
 			->fetchAll();
+	}
+	
+	public function deleteAllOptions($question_id)
+	{
+		$this->delete('question = ' . $question_id);
 	}
 }
