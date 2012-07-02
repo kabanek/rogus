@@ -18,8 +18,10 @@ class UserController extends BaseController
 
 				if ($result->isValid()) {
 					$this->_session->userId = $result->getIdentity();
+					$this->_flashMessenger->setNamespace('success')->addMessage('Zostałeś zalogowany');
 					$this->_helper->redirector('index', 'index');
 				} else {
+					$this->_flashMessenger->setNamespace('error')->addMessage('Zły login i/lub hasło');
 					$this->_helper->redirector('login', 'user');
 				}
 			}
@@ -32,6 +34,7 @@ class UserController extends BaseController
 	public function logoutAction()
 	{
 		unset($this->_session->userId);
+		$this->_flashMessenger->setNamespace('success')->addMessage('Zostałeś wylogowany');
 		$this->_helper->redirector('index', 'index');
 	}
 }

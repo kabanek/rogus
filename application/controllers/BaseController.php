@@ -26,6 +26,8 @@ class BaseController extends Zend_Controller_Action
 	 * @var bool
 	 */
 	protected $_loggedIn;
+	
+	protected $_flashMessenger;
 
 	function init()
 	{
@@ -46,5 +48,7 @@ class BaseController extends Zend_Controller_Action
 		}
 
 		$this->view->userData = $this->_userData;
+		
+		$this->view->flashMessager = $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
 	}
 }

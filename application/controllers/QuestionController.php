@@ -63,6 +63,8 @@ class QuestionController extends BaseController
 					$option->insert($optionData);
 				}
 				
+				$this->_flashMessenger->setNamespace('success')->addMessage('Pytanie zostało dodane');
+				
 				$this->_helper->redirector('index', 'question');
 			}
 		}
@@ -101,6 +103,8 @@ class QuestionController extends BaseController
 		
 		$questionTable = new Application_Model_Question();
 		$questionTable->remove($this->_getParam('id'), $this->_userData['id']);
+		
+		$this->_flashMessenger->setNamespace('success')->addMessage('Pytanie zostało usunięte');
 		
 		$this->_helper->redirector('index', 'question');
 	}
@@ -173,6 +177,8 @@ class QuestionController extends BaseController
 					$questionOptionTable->insert($optionData);
 				}
 				
+				$this->_flashMessenger->setNamespace('success')->addMessage('Pytanie zostało zaktualizowane');
+				
 				$this->_helper->redirector('index', 'question');
 			}
 		} else {
@@ -190,7 +196,6 @@ class QuestionController extends BaseController
 				));
 				
 				++$i;
-				echo $i;
 			}
 		}
 		

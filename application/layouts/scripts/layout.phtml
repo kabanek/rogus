@@ -98,6 +98,22 @@
      
        
        <div class="main_con">
+
+		<?php if ($this->flashMessager->setNamespace('success')->hasMessages()): ?>
+		    <div class="message success">
+		    <?php foreach ($this->flashMessager->getMessages() as $msg): ?>
+		        <?php echo $msg ?>
+		    <?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
+		
+		<?php if ($this->flashMessager->setNamespace('error')->hasMessages()): ?>
+		    <div class="message error">
+		    <?php foreach ($this->flashMessager->getMessages() as $msg): ?>
+		        <?php echo $msg ?>
+		    <?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
        
         <?php echo $this->layout()->content; ?>
        </div>

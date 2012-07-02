@@ -716,3 +716,18 @@ table.bluedream { background:#D3E4E5;
 }
 
 /* end style tables */
+
+/* notifications */
+
+div.message {
+    border: 2px dotted;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+div.success {
+    color: green;
+}
+div.error {
+    color: red;
+}

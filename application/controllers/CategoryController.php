@@ -27,7 +27,7 @@ class CategoryController extends BaseController
 				$categoryData['user'] = $this->_userData['id'];
 				
 				$category->insert($categoryData);
-								
+				$this->_flashMessenger->setNamespace('success')->addMessage('Kategoria została dodana');
 				$this->_helper->redirector('index', 'category');
 			}
 		}
@@ -67,6 +67,7 @@ class CategoryController extends BaseController
 		$questionTable = new Application_Model_Question_Category();
 		$questionTable->remove($this->_getParam('id'), $this->_userData['id']);
 		
+		$this->_flashMessenger->setNamespace('success')->addMessage('Kategoria została usunięta');
 		$this->_helper->redirector('index', 'category');
 	}
 	
@@ -98,6 +99,7 @@ class CategoryController extends BaseController
 				);
 				
 				$questionCategoryTable->update($data, 'id = ' . $this->_getParam('id'));
+				$this->_flashMessenger->setNamespace('success')->addMessage('Kategoria została zaktualizowana');
 				$this->_helper->redirector('index', 'category');
 			}
 		} else {
