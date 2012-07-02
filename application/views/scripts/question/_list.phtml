@@ -4,6 +4,7 @@
 			<th>Lp.</th>
 			<th>Treść pytania</th>
 			<th>Ilość punktów</th>
+			<th>Załącznik</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -14,6 +15,11 @@
 			<td><?php echo ++$i ?></td>
 			<td><?php echo $this->escape($question['text']) ?></td>
 			<td><?php echo $question['weight']?></td>
+			<td>
+				<?php if ($question['file']): ?>
+				<a href="<?php echo $this->url(array('action' => 'attachement', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Pobierz</a>
+				<?php endif?>
+			</td>
 			<td>
 				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>">Edytuj</a> |
 				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'question', 'id' => $question['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
