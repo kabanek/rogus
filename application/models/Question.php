@@ -24,9 +24,9 @@ class Application_Model_Question extends Zend_Db_Table {
 	public function getUserQuestionsInCategory($user_id, $category_id)
 	{
 		return $this->select()
-		->where('user = ?', $user_id)
-		->where('category = ?', $category_id)
-		->query()->fetchAll();
+			->where('user = ?', $user_id)
+			->where('category = ?', $category_id)
+			->query()->fetchAll();
 	}
 	
 	/**

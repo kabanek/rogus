@@ -1,0 +1,31 @@
+<h2>Lista Twoich testów</h2>
+
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Nazwa testu</th>
+			<th>Ważny od</th>
+			<th>Ważny do</th>
+			<th>Zdane od</th>
+			<th>Czas</th>
+			<th>Ilość pytań</th>
+			<th>Akcje</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach($this->tests as $test): ?>
+		<tr>
+			<td><?php echo $test['name']?></td>
+			<td><?php echo $test['start_at']?></td>
+			<td><?php echo $test['end_at']?></td>
+			<td><?php echo $test['points']?> %</td>
+			<td><?php echo $test['time']?></td>
+			<td><?php echo $test['quastions_limit']?></td>
+			<td>
+				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Edytuj</a> |
+				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+			</td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>

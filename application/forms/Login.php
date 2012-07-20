@@ -18,9 +18,5 @@ class Application_Form_Login extends Zend_Form {
         $this->addElement('submit', 'submit', array(
             'label' => 'Zaloguj',
         ));
-
-        $this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-        ));
     }
 }
