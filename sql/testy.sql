@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 17 Cze 2012, 09:17
+-- Czas wygenerowania: 21 Lip 2012, 10:59
 -- Wersja serwera: 5.5.24
--- Wersja PHP: 5.4.3-4~precise+1
+-- Wersja PHP: 5.4.4-1~precise+1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Zrzut danych tabeli `question`
@@ -70,7 +70,13 @@ INSERT INTO `question` (`id`, `text`, `weight`, `category`, `file`, `file_name`,
 (7, 'czy lubisz kabana?', 100, 5, '', '', NULL, 1),
 (8, 'A rogusia lubisz?', 10, 4, '', '', NULL, 1),
 (9, 'fdsfasf', 10, NULL, '', '', NULL, 1),
-(10, '222', 10, 4, '', '', NULL, 1);
+(10, '222', 10, 4, '', '', NULL, 1),
+(11, 'lubisz placki?', 10, 4, 'question_4fde2c03c4263', '', '', 1),
+(12, 'fds', 10, 4, 'question_4fde2f6d3f811', '', '', 1),
+(13, 'lubie placki', 10, 4, 'question_4fde311691127', '', '', 1),
+(14, 'lubisz mnie', 10, 4, 'question_4ff1d2fce7281', '3.jpg', 'image/jpeg', 1),
+(15, 'lubisz mnie', 10, 4, 'question_4ff1d33aac40a', '3.jpg', 'image/jpeg', 1),
+(16, 'fsdfsdfsdafsd', 10, 4, 'question_4ff1d369bbfea', '5.jpg', '', 1);
 
 -- --------------------------------------------------------
 
@@ -109,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `question_option` (
   `correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question` (`question`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- Zrzut danych tabeli `question_option`
@@ -118,10 +124,17 @@ CREATE TABLE IF NOT EXISTS `question_option` (
 INSERT INTO `question_option` (`id`, `question`, `text`, `correct`) VALUES
 (9, 7, 'tak', 1),
 (10, 7, 'nie', 0),
-(11, 8, 'Tak', 0),
-(12, 8, 'Nie', 1),
 (13, 10, 'Tak', 1),
-(14, 10, 'nie', 0);
+(14, 10, 'nie', 0),
+(23, 8, 'Tak', 0),
+(24, 8, 'Nie', 1),
+(25, 8, 'ani trochę', 0),
+(26, 14, 'tak', 1),
+(27, 14, 'nie', 0),
+(28, 15, 'tak', 0),
+(29, 15, 'nie', 1),
+(30, 16, 'fdsa', 1),
+(31, 16, 'fdsa', 0);
 
 -- --------------------------------------------------------
 
@@ -141,7 +154,36 @@ CREATE TABLE IF NOT EXISTS `test` (
   `quastions_limit` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Zrzut danych tabeli `test`
+--
+
+INSERT INTO `test` (`id`, `user`, `open`, `name`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`) VALUES
+(6, 1, 0, 'dsfsaf', 50, '2012-07-20 19:41:51', '2012-07-20 19:41:51', 15, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `test_category`
+--
+
+CREATE TABLE IF NOT EXISTS `test_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `test` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `test` (`test`,`category`),
+  KEY `category` (`category`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+
+--
+-- Zrzut danych tabeli `test_category`
+--
+
+INSERT INTO `test_category` (`id`, `test`, `category`) VALUES
+(21, 6, 4);
 
 -- --------------------------------------------------------
 
@@ -229,6 +271,13 @@ ALTER TABLE `question_option`
 --
 ALTER TABLE `test`
   ADD CONSTRAINT `test_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+
+--
+-- Ograniczenia dla tabeli `test_category`
+--
+ALTER TABLE `test_category`
+  ADD CONSTRAINT `test_category_ibfk_1` FOREIGN KEY (`test`) REFERENCES `test` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `test_category_ibfk_2` FOREIGN KEY (`category`) REFERENCES `question_category` (`id`);
 
 --
 -- Ograniczenia dla tabeli `user_test`
