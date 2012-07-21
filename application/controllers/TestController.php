@@ -81,7 +81,9 @@ class TestController extends BaseController
 		$form = new Application_Form_Test_New;
 		$testTable = new Application_Model_Test();
 		
-		$test = $testTable->find($this->_getParam('id'))->getRow(0)->toArray();
+		$test_id = $this->_getParam('id');
+		
+		$test = $testTable->find($test_id)->getRow(0)->toArray();
 	
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
@@ -93,10 +95,13 @@ class TestController extends BaseController
 				$questionData['end_at'] 			= $_POST['end_at'];
 				$questionData['time'] 				= $_POST['time'];
 				$questionData['quastions_limit'] 	= $_POST['quastions_limit'];
-				$questionData['user'] 				= $this->_userData['id'];
 	
-				$test_id = $testTable->insert($questionData);
+				$testTable->update($questionData, 'id = ' . $this->_getParam('id'));
 				$testCategoryTable = new Application_Model_Test_Category;
+				
+				$query = 'DELETE FROM test_category WHERE test = ' . $test_id;
+
+				$testCategoryTable->getAdapter()->query($query);
 	
 				foreach ($_POST['categories'] as $cat_id) {
 					$testCategoryTable->insert(array(
@@ -118,6 +123,17 @@ class TestController extends BaseController
 					'time'	=> $test['time'],
 					'quastions_limit'	=> $test['quastions_limit'],
 			));
+			
+			$testCategoryTable = new Application_Model_Test_Category;
+			$cats = $testCategoryTable->getAdapter()->query('SELECT category FROM test_category WHERE test = ' . $test_id)->fetchAll();
+			
+			$ids = array();
+			
+			foreach ($cats as $cat) {
+				$ids[] = $cat['category'];
+			}
+			
+			$form->getElement('categories')->setValue($ids);
 		}
 	
 		$this->view->form = $form;
