@@ -37,4 +37,29 @@ class UserController extends BaseController
 		$this->_flashMessenger->setNamespace('success')->addMessage('Zostałeś wylogowany');
 		$this->_helper->redirector('index', 'index');
 	}
+	
+	public function registerAction()
+	{
+		$form = new Application_Form_Register;
+		
+		$request = $this->getRequest();
+		
+		if (count($_POST)) {
+			if ($form->isValid($_POST)) {
+				$data = $_POST;
+				unset($data['submit'], $data['password2']);
+				$data['creditals'] = 0;
+				
+				$data['password'] = md5($data['password']);
+				
+				$userTable = new Application_Model_User;
+				$userTable->insert($data);
+				
+				$this->_flashMessenger->setNamespace('success')->addMessage('Twoje konto zostało założone. Możesz się teraz zalogować');
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
+		$this->view->form = $form;
+	}
 }
