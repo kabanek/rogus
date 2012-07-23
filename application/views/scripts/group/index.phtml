@@ -1,0 +1,21 @@
+<h2>Lista Twoich grup</h2>
+
+<table class="bluedream">
+    <thead>
+        <tr>
+            <th>Nazwa grupy</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->groups as $group): ?>
+        <tr>
+            <td><?php echo $group['name']?></td>
+            <td>
+                <a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'group', 'id' => $group['id']), NULL, 'default') ?>">Edytuj</a> |
+                <a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'group', 'id' => $group['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+            </td>
+        </tr>
+    <?php endforeach ?>
+    </tbody>
+</table>
