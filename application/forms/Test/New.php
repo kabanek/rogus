@@ -58,6 +58,24 @@ class Application_Form_Test_New extends Zend_Form {
         
         $this->getElement('categories')->setRegisterInArrayValidator(false);
         
+        $testTable = new Application_Model_Group();
+        $cats = $testTable->getUserGroups($session->userId);
+        
+        $catsSelect = array();
+        
+        foreach ($cats as $cat) {
+        	$catsSelect[$cat['id']] = $cat['name'];
+        }
+        
+        $this->addElement('select', 'groups', array(
+        		'label' 		=> 'Grupy użytkowników',
+        		'required' 		=> true,
+        		'multiple'		=> true,
+        		'multiOptions'	=> $catsSelect
+        ));
+        
+        $this->getElement('groups')->setRegisterInArrayValidator(false);
+        
         $this->addElement('text', 'time', array(
         		'label' => 'Długość trwania testu (w minutach)',
         		'required' => true,

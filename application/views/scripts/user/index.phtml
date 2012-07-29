@@ -1,0 +1,27 @@
+<h2>Lista Twoich kategorii</h2>
+
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Użytkownik</th>
+			<th>Adres email</th>
+			<th>Admin</th>
+			<th>Uprawnienia</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach($this->users as $user): ?>
+		<tr>
+			<td><?php echo $user['name']?></td>
+			<td><?php echo $user['email']?></td>
+			<td><?php echo $user['admin'] ? 'Tak' : 'Nie'?></td>
+			<td><?php echo $user['creditals'] ? 'Nauczyciel' : 'Zwykły user'?></td>
+			<td>
+				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'user', 'id' => $user['id']), NULL, 'default') ?>">Edytuj</a> |
+				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'user', 'id' => $user['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+			</td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>

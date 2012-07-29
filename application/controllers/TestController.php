@@ -58,6 +58,15 @@ class TestController extends BaseController
 					));
 				}
 				
+				$testGroupTable = new Application_Model_Test_Group;
+				
+				foreach ($_POST['groups'] as $cat_id) {
+					$testGroupTable->insert(array(
+							'test'		=> $test_id,
+							'group'		=> $cat_id,
+					));
+				}
+				
 				$this->_flashMessenger->setNamespace('success')->addMessage('Test został dodany');
 				$this->_helper->redirector('index', 'test');
 			}
@@ -98,6 +107,7 @@ class TestController extends BaseController
 	
 				$testTable->update($questionData, 'id = ' . $this->_getParam('id'));
 				$testCategoryTable = new Application_Model_Test_Category;
+				$testGroupTable = new Application_Model_Test_Group;
 				
 				$query = 'DELETE FROM test_category WHERE test = ' . $test_id;
 
@@ -107,6 +117,17 @@ class TestController extends BaseController
 					$testCategoryTable->insert(array(
 							'test'		=> $test_id,
 							'category'	=> $cat_id,
+					));
+				}
+				
+				$query = 'DELETE FROM test_group WHERE test = ' . $test_id;
+				
+				$testGroupTable->getAdapter()->query($query);
+				
+				foreach ($_POST['groups'] as $cat_id) {
+					$testGroupTable->insert(array(
+							'test'		=> $test_id,
+							'group'		=> $cat_id,
 					));
 				}
 	
@@ -134,6 +155,17 @@ class TestController extends BaseController
 			}
 			
 			$form->getElement('categories')->setValue($ids);
+			
+			$testGroupTable = new Application_Model_Test_Group;
+			$cats = $testCategoryTable->getAdapter()->query('SELECT `group` FROM test_group WHERE test = ' . $test_id)->fetchAll();
+				
+			$ids = array();
+				
+			foreach ($cats as $cat) {
+				$ids[] = $cat['group'];
+			}
+				
+			$form->getElement('groups')->setValue($ids);
 		}
 	
 		$this->view->form = $form;
