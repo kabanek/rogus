@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 21 Lip 2012, 10:59
+-- Czas wygenerowania: 30 Lip 2012, 00:55
 -- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.4.4-1~precise+1
 
@@ -41,6 +41,30 @@ CREATE TABLE IF NOT EXISTS `config` (
 INSERT INTO `config` (`id`, `code`, `value`) VALUES
 (1, 'site/name', 'System do tworzenia testow'),
 (2, 'site/type', 'closed');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `group`
+--
+
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `user` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Zrzut danych tabeli `group`
+--
+
+INSERT INTO `group` (`id`, `name`, `user`) VALUES
+(1, 'raz :)', 1),
+(2, 'test1', 1),
+(3, 'test2', 1),
+(4, 'test5', 1);
 
 -- --------------------------------------------------------
 
@@ -161,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `test` (
 --
 
 INSERT INTO `test` (`id`, `user`, `open`, `name`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`) VALUES
-(6, 1, 0, 'dsfsaf', 50, '2012-07-20 19:41:51', '2012-07-20 19:41:51', 15, 10);
+(6, 1, 0, 'dsfsaf', 50, '2012-07-20 19:41:51', '2012-07-22 19:41:51', 15, 10);
 
 -- --------------------------------------------------------
 
@@ -176,14 +200,36 @@ CREATE TABLE IF NOT EXISTS `test_category` (
   PRIMARY KEY (`id`),
   KEY `test` (`test`,`category`),
   KEY `category` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Zrzut danych tabeli `test_category`
 --
 
 INSERT INTO `test_category` (`id`, `test`, `category`) VALUES
-(21, 6, 4);
+(24, 6, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `test_group`
+--
+
+CREATE TABLE IF NOT EXISTS `test_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `test` int(11) NOT NULL,
+  `group` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question` (`test`,`group`),
+  KEY `group` (`group`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Zrzut danych tabeli `test_group`
+--
+
+INSERT INTO `test_group` (`id`, `test`, `group`) VALUES
+(1, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -199,14 +245,38 @@ CREATE TABLE IF NOT EXISTS `user` (
   `admin` tinyint(4) NOT NULL,
   `creditals` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Zrzut danych tabeli `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `password`, `admin`, `creditals`) VALUES
-(1, 'admin', 'kontakt@bkielbasa.pl', '21232f297a57a5a743894a0e4a801fc3', 1, 1);
+(1, 'admin', 'kontakt@bkielbasa.pl', '21232f297a57a5a743894a0e4a801fc3', 1, 1),
+(2, 'root', 'bartlomiej.kielbasa@gmail.com', '8b4f18be4790e513ae9c7fb83199c120', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `user_group`
+--
+
+CREATE TABLE IF NOT EXISTS `user_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `group` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`,`group`),
+  KEY `group` (`group`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+
+--
+-- Zrzut danych tabeli `user_group`
+--
+
+INSERT INTO `user_group` (`id`, `user`, `group`) VALUES
+(14, 1, 3),
+(15, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -248,6 +318,12 @@ CREATE TABLE IF NOT EXISTS `user_test_answer` (
 --
 
 --
+-- Ograniczenia dla tabeli `group`
+--
+ALTER TABLE `group`
+  ADD CONSTRAINT `group_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+
+--
 -- Ograniczenia dla tabeli `question`
 --
 ALTER TABLE `question`
@@ -278,6 +354,20 @@ ALTER TABLE `test`
 ALTER TABLE `test_category`
   ADD CONSTRAINT `test_category_ibfk_1` FOREIGN KEY (`test`) REFERENCES `test` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `test_category_ibfk_2` FOREIGN KEY (`category`) REFERENCES `question_category` (`id`);
+
+--
+-- Ograniczenia dla tabeli `test_group`
+--
+ALTER TABLE `test_group`
+  ADD CONSTRAINT `test_group_ibfk_1` FOREIGN KEY (`test`) REFERENCES `test` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `test_group_ibfk_2` FOREIGN KEY (`group`) REFERENCES `group` (`id`) ON DELETE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `user_group`
+--
+ALTER TABLE `user_group`
+  ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`group`) REFERENCES `group` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `user_test`
