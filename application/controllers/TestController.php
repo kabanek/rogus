@@ -403,4 +403,25 @@ class TestController extends BaseController
 		
 		$this->view->form = $form;
 	}
+	
+	function resultsAction()
+	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
+		$answerTable = new Application_Model_User_Test_Answer();
+		
+		$tests = $answerTable->getAdapter()
+			->query('SELECT * FROM user_test as ut LEFT JOIN test as t ON t.id = ut.test WHERE ut.user = ' . $this->_userData['id'])
+			->fetchAll();
+		
+		$this->view->tests = $tests;
+	}
 }

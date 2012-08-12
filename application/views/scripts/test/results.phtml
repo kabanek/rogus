@@ -1,0 +1,53 @@
+<link class="include" rel="stylesheet" type="text/css" href="/css/jquery/jqplot/jquery.jqplot.min.css" />
+<script language="javascript" src="/js/jquery/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.pieRenderer.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.donutRenderer.min.js"></script>
+
+<table>
+	<tr>
+		<th>Nazwa testu</th>
+		<th>Data rozpoczęcia testu</th>
+		<th>Wynik w procentach</th>
+		<th>Test zaliczony</th>
+	</tr>
+<?php $correct = 0 ?>
+<?php foreach ($this->tests as $test): ?>
+	<?php if ($test['result'] >= $test['points']) ++$correct ?>
+	<tr>
+		<td><?php echo $test['name'] ?></td>
+		<td><?php echo $test['started_at'] ?></td>
+		<td><?php echo $test['result'] ?> %</td>
+		<td><?php echo $test['result'] >= $test['points'] ? 'Tak' : 'Nie'?></td>
+	</tr>
+<?php endforeach ?>
+</table>
+
+<h2>Wykres zdanych testów</h2>
+
+<div id="test_stats">
+	
+</div>
+
+<script language="javascript">
+$(document).ready(function(){
+	  var data = [
+	    ['Zaliczone', <?php echo $correct?>], ['Niezaliczone', <?php echo count($this->tests) - $correct?>]
+	  ];
+	  var plot1 = jQuery.jqplot ('test_stats', [data], 
+	    {
+	      seriesDefaults: {
+	        // Make this a pie chart.
+	        renderer: jQuery.jqplot.PieRenderer, 
+	        rendererOptions: {
+	          // Put data labels on the pie slices.
+	          // By default, labels show the percentage of the slice.
+	          showDataLabels: true
+	        }
+	      }, 
+	      legend: { show:true, location: 'e' },
+	      width: 10,
+	      height: 200
+	    }
+	  );
+	});
+</script>

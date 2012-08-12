@@ -389,7 +389,6 @@ form {
     list-style-type: none;
 }
 .box1_con_blue ul li {
-    background-image: url("../images/list_arrow.gif");
     background-position: 0 5px;
     background-repeat: no-repeat;
     margin-bottom: 10px !important;
@@ -437,7 +436,6 @@ form {
     list-style-type: none;
 }
 .box1_con ul li {
-    background-image: url("../images/list_arrow.gif");
     background-position: 0 5px;
     background-repeat: no-repeat;
     margin-bottom: 10px !important;
@@ -485,7 +483,6 @@ form {
     list-style-type: none;
 }
 .box1_con_lightblue ul li {
-    background-image: url("../images/list_arrow.gif");
     background-position: 0 5px;
     background-repeat: no-repeat;
     margin-bottom: 10px !important;
@@ -533,7 +530,6 @@ form {
     list-style-type: none;
 }
 .main_con ul li {
-    background-image: url("../images/list_arrow.gif");
     background-position: 0 5px;
     background-repeat: no-repeat;
     margin-bottom: 10px !important;

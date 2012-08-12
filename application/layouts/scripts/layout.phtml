@@ -21,7 +21,7 @@
 	<link href="<?php echo $this->baseUrl('css/jquery/base/jquery.ui.all.css') ?>" rel="stylesheet" type="text/css" />
 </head>
 
-<body onload='f();'><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
+<body><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
 
 <div id="wrapper">
 
@@ -85,6 +85,7 @@
 			<ul>
 				<li><a href="<?php echo $this->url(array('action' => 'new', 'controller' => 'question'), NULL, 'default') ?>">Utwórz nowe pytanie</a></li>
 				<li><a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>">Twoje pytania</a></li>
+				<li><a href="<?php echo $this->url(array('action' => 'results', 'controller' => 'test'), NULL, 'default') ?>">Wyniki testów</a></li>
 				
 				<li><a href="<?php echo $this->url(array('action' => 'new', 'controller' => 'category'), NULL, 'default') ?>">Utwórz nową kategorię pytań</a></li>
 				<li><a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'category'), NULL, 'default') ?>">Twoje kategorie</a></li>
