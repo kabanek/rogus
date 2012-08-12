@@ -526,14 +526,13 @@ form {
     padding: 0 0 0 10px;
 }
 .main_con ul {
-    line-height: 130%;
+    line-height: 100%;
     list-style-type: none;
 }
 .main_con ul li {
     background-position: 0 5px;
     background-repeat: no-repeat;
-    margin-bottom: 10px !important;
-    margin-left: -15px;
+    margin-left: -58px;
     margin-top: -5px !important;
     padding: 0 0 0 18px;
 }
@@ -864,10 +863,142 @@ div.success {
 div.error {
     color: red;
 }
-
-.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
-.ui-timepicker-div dl { text-align: left; }
-.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
-.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
-.ui-timepicker-div td { font-size: 90%; }
-.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.ui-timepicker-div .ui-widget-header {
+    margin-bottom: 8px;
+}
+.ui-timepicker-div dl {
+    text-align: left;
+}
+.ui-timepicker-div dl dt {
+    height: 25px;
+    margin-bottom: -25px;
+}
+.ui-timepicker-div dl dd {
+    margin: 0 10px 10px 65px;
+}
+.ui-timepicker-div td {
+    font-size: 90%;
+}
+.ui-tpicker-grid-label {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    margin: 0;
+    padding: 0;
+}
+.mega-menu {
+    background: none repeat scroll 0 0 #333333;
+    border-left: 1px solid #1B1B1B;
+    font: bold 13px/16px Arial,sans-serif;
+    position: relative;
+    width: 180px;
+}
+.mega-menu li a {
+    border-bottom: 1px solid #222222;
+    border-right: 1px solid #1B1B1B;
+    border-top: 1px solid #555555;
+    color: #FFFFFF;
+    display: block;
+    padding: 12px 38px 12px 25px;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px #000000;
+}
+.mega-menu li a:hover, .mega-menu li.mega-hover a {
+    background: none repeat scroll 0 0 #4B4B4B;
+    border-right: 1px solid #4B4B4B;
+    color: #FFFFFF;
+}
+.mega-menu li a.dc-mega {
+    position: relative;
+}
+.mega-menu li a .dc-mega-icon {
+    background: url("../images/arrow_right.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 8px;
+    position: absolute;
+    right: 15px;
+    top: 18px;
+    width: 6px;
+}
+.mega-menu li .sub-container {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #4B4B4B;
+    border-color: #4B4B4B #4B4B4B #4B4B4B -moz-use-text-color;
+    border-style: solid solid solid none;
+    border-width: 1px 1px 1px medium;
+    overflow: hidden;
+    padding: 10px 10px 0;
+    position: absolute;
+}
+.mega-menu li .sub .row {
+    overflow: hidden;
+    width: 100%;
+}
+.mega-menu li .sub li {
+    float: none;
+    font-size: 1em;
+    font-weight: normal;
+    width: 150px;
+}
+.mega-menu li .sub li.mega-hdr {
+    float: left;
+    margin: 0 5px 10px;
+}
+.mega-menu li .sub a, .mega-menu.left li .sub a {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    color: #FFFFFF;
+    display: block;
+    float: none;
+    font-size: 0.9em;
+    padding: 7px 10px;
+    text-decoration: none;
+    text-shadow: none;
+}
+.mega-menu li .sub li.mega-hdr a.mega-hdr-a {
+    background: none repeat scroll 0 0 #E88221;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 5px 5px 5px 15px;
+    text-shadow: 1px 1px 1px #333333;
+    text-transform: uppercase;
+}
+.mega-menu li .sub li.mega-hdr a.mega-hdr-a:hover {
+    color: #000000;
+    text-shadow: none;
+}
+.mega-menu .sub li.mega-hdr li a {
+    background: url("../images/arrow_white.png") no-repeat scroll 5px 8px transparent;
+    font-weight: normal;
+    padding: 4px 5px 4px 20px;
+}
+.mega-menu .sub li.mega-hdr li a:hover {
+    background: url("../images/arrow_on.png") no-repeat scroll 5px 8px #EFEFEF;
+    color: #A32403;
+}
+.mega-menu .sub ul li {
+    padding-right: 0;
+}
+.mega-menu li .sub-container.non-mega .sub {
+    padding: 10px;
+}
+.mega-menu li .sub-container.non-mega li {
+    margin: 0;
+    padding: 0;
+    width: 150px;
+}
+.mega-menu li .sub-container.non-mega li a {
+    background: url("../images/arrow_white.png") no-repeat scroll 7px 10px transparent;
+    padding: 7px 5px 7px 22px;
+}
+.mega-menu li .sub-container.non-mega li a:hover {
+    background: url("../images/arrow_on.png") no-repeat scroll 7px 10px #EFEFEF;
+    color: #A32403;
+}
+#mega-1 .sub li {
+    left: 10px;
+}
