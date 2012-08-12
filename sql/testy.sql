@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 30 Lip 2012, 00:55
+-- Czas wygenerowania: 13 Sie 2012, 01:55
 -- Wersja serwera: 5.5.24
--- Wersja PHP: 5.4.4-1~precise+1
+-- Wersja PHP: 5.4.4-4~precise+1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `question_option` (
   `correct` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question` (`question`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 --
 -- Zrzut danych tabeli `question_option`
@@ -158,7 +158,13 @@ INSERT INTO `question_option` (`id`, `question`, `text`, `correct`) VALUES
 (28, 15, 'tak', 0),
 (29, 15, 'nie', 1),
 (30, 16, 'fdsa', 1),
-(31, 16, 'fdsa', 0);
+(31, 16, 'fdsa', 0),
+(32, 12, 'tak', 1),
+(33, 12, 'nie', 0),
+(34, 13, 'nie', 0),
+(35, 13, 'tak', 1),
+(36, 11, 'tak', 1),
+(37, 11, 'NIE', 0);
 
 -- --------------------------------------------------------
 
@@ -176,16 +182,18 @@ CREATE TABLE IF NOT EXISTS `test` (
   `end_at` datetime NOT NULL,
   `time` int(11) NOT NULL,
   `quastions_limit` int(11) NOT NULL,
+  `one_page` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Zrzut danych tabeli `test`
 --
 
-INSERT INTO `test` (`id`, `user`, `open`, `name`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`) VALUES
-(6, 1, 0, 'dsfsaf', 50, '2012-07-20 19:41:51', '2012-07-22 19:41:51', 15, 10);
+INSERT INTO `test` (`id`, `user`, `open`, `name`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`, `one_page`) VALUES
+(6, 1, 0, 'dsfsaf', 50, '2012-07-20 19:41:51', '2012-07-22 19:41:51', 15, 10, 0),
+(7, 1, 0, 'Test dla grupy test5', 50, '2012-07-30 00:59:43', '2012-08-31 00:59:43', 15, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -200,14 +208,21 @@ CREATE TABLE IF NOT EXISTS `test_category` (
   PRIMARY KEY (`id`),
   KEY `test` (`test`,`category`),
   KEY `category` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 --
 -- Zrzut danych tabeli `test_category`
 --
 
 INSERT INTO `test_category` (`id`, `test`, `category`) VALUES
-(24, 6, 4);
+(37, 6, 4),
+(38, 6, 5),
+(39, 6, 6),
+(40, 6, 7),
+(29, 7, 4),
+(30, 7, 5),
+(31, 7, 6),
+(32, 7, 7);
 
 -- --------------------------------------------------------
 
@@ -222,14 +237,15 @@ CREATE TABLE IF NOT EXISTS `test_group` (
   PRIMARY KEY (`id`),
   KEY `question` (`test`,`group`),
   KEY `group` (`group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Zrzut danych tabeli `test_group`
 --
 
 INSERT INTO `test_group` (`id`, `test`, `group`) VALUES
-(1, 6, 1);
+(5, 6, 1),
+(3, 7, 4);
 
 -- --------------------------------------------------------
 
@@ -289,12 +305,21 @@ CREATE TABLE IF NOT EXISTS `user_test` (
   `user` int(11) NOT NULL,
   `test` int(11) NOT NULL,
   `started_at` datetime NOT NULL,
-  `result` int(11) DEFAULT NULL,
+  `result` float DEFAULT NULL,
   `current_question` int(11) DEFAULT NULL,
+  `finished` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user` (`user`,`test`),
-  KEY `current_question` (`current_question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `current_question` (`current_question`),
+  KEY `test` (`test`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
+
+--
+-- Zrzut danych tabeli `user_test`
+--
+
+INSERT INTO `user_test` (`id`, `user`, `test`, `started_at`, `result`, `current_question`, `finished`) VALUES
+(49, 1, 7, '2012-08-12 19:05:05', 60, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -310,8 +335,44 @@ CREATE TABLE IF NOT EXISTS `user_test_answer` (
   `points` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_test` (`user_test`,`question`),
+  KEY `question` (`question`),
+  KEY `answer` (`answer`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+
+--
+-- Zrzut danych tabeli `user_test_answer`
+--
+
+INSERT INTO `user_test_answer` (`id`, `user_test`, `question`, `answer`, `points`) VALUES
+(30, 49, 10, 13, 1),
+(31, 49, 11, 37, 0),
+(32, 49, 13, 34, 0),
+(33, 49, 15, 28, 0),
+(34, 49, 16, 30, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla  `user_test_question`
+--
+
+CREATE TABLE IF NOT EXISTS `user_test_question` (
+  `user_test` int(11) NOT NULL,
+  `question` int(11) NOT NULL,
+  KEY `user_test` (`user_test`),
   KEY `question` (`question`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `user_test_question`
+--
+
+INSERT INTO `user_test_question` (`user_test`, `question`) VALUES
+(49, 10),
+(49, 11),
+(49, 13),
+(49, 15),
+(49, 16);
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -366,21 +427,30 @@ ALTER TABLE `test_group`
 -- Ograniczenia dla tabeli `user_group`
 --
 ALTER TABLE `user_group`
-  ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`group`) REFERENCES `group` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`group`) REFERENCES `group` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `user_test`
 --
 ALTER TABLE `user_test`
-  ADD CONSTRAINT `user_test_ibfk_2` FOREIGN KEY (`current_question`) REFERENCES `question` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `user_test_ibfk_3` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `user_test_ibfk_4` FOREIGN KEY (`test`) REFERENCES `test` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `user_test_answer`
 --
 ALTER TABLE `user_test_answer`
-  ADD CONSTRAINT `user_test_answer_ibfk_1` FOREIGN KEY (`user_test`) REFERENCES `user_test` (`id`),
-  ADD CONSTRAINT `user_test_answer_ibfk_2` FOREIGN KEY (`question`) REFERENCES `question` (`id`);
+  ADD CONSTRAINT `user_test_answer_ibfk_5` FOREIGN KEY (`answer`) REFERENCES `question_option` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_test_answer_ibfk_3` FOREIGN KEY (`user_test`) REFERENCES `user_test` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_test_answer_ibfk_4` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON DELETE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `user_test_question`
+--
+ALTER TABLE `user_test_question`
+  ADD CONSTRAINT `user_test_question_ibfk_1` FOREIGN KEY (`user_test`) REFERENCES `user_test` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_test_question_ibfk_2` FOREIGN KEY (`question`) REFERENCES `question` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
