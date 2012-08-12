@@ -46,6 +46,7 @@ class TestController extends BaseController
 				$questionData['end_at'] 			= $_POST['end_at'];
 				$questionData['time'] 				= $_POST['time'];
 				$questionData['quastions_limit'] 	= $_POST['quastions_limit'];
+				$questionData['one_page'] 			= $_POST['one_page'];
 				$questionData['user'] 				= $this->_userData['id'];
 								
 				$test_id = $testTable->insert($questionData);
@@ -104,6 +105,7 @@ class TestController extends BaseController
 				$questionData['end_at'] 			= $_POST['end_at'];
 				$questionData['time'] 				= $_POST['time'];
 				$questionData['quastions_limit'] 	= $_POST['quastions_limit'];
+				$questionData['one_page'] 			= $_POST['one_page'];
 	
 				$testTable->update($questionData, 'id = ' . $this->_getParam('id'));
 				$testCategoryTable = new Application_Model_Test_Category;
@@ -178,5 +180,227 @@ class TestController extends BaseController
 		
 		$this->_flashMessenger->setNamespace('success')->addMessage('Test został usunięty');
 		$this->_helper->redirector('index', 'test');
+	}
+	
+	public function startAction()
+	{
+		$testTable = new Application_Model_Test();
+		$testUserTable = new Application_Model_User_Test();
+		
+		$test_id = $this->_getParam('id');
+		
+		// sprawdzam, czy użytkownik nie rozwiązywał tego testu
+		$testUser = $testUserTable->select()
+			->where('user = ?', $this->_userData['id'])
+			->where('test = ?', $test_id)
+			->query()->fetch();
+		
+		$test = $testTable->find($test_id)->getRow(0)->toArray();
+		
+		// sprawdzam, czy data rozpoczęcia testu pozwala na jego rozwiązywanie
+		$now	   = new DateTime;
+		$startedAt = new DateTime($test['start_at']);
+		
+		if ($now < $startedAt) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Nie można rozwiązywać testu');
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		$startedAt = new DateTime($test['end_at']);
+		
+		if ($now > $startedAt) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Czas na rozwiązanie testu minął');
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($testUser) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Test został już rozpoczęty');
+			$this->_helper->redirector('question', 'test','default', array(
+					'id'	=> $test_id
+			));
+		}
+				
+		$categories = $testTable->getAdapter()->query('SELECT * FROM test_category as tc WHERE test = ' . $test['id'])->fetchAll();
+		
+		$ids = array();
+		
+		foreach ($categories as $cat) {
+			$ids[] = $cat['category'];
+		}
+		
+		$q = 'SELECT * FROM question as ques WHERE ques.category IN(' . implode(',', $ids) .')';
+		
+		$questions = $testTable->getAdapter()->query($q)->fetchAll();
+		
+		$count = $test['quastions_limit'] < count($questions) ? $test['quastions_limit'] : count($questions);
+		
+		$list = array_flip(range(1, count($questions)));
+		
+		$ids = array_rand($list, $count);
+		
+		$testUserId = $testUserTable->insert(array(
+				'user'	=> $this->_userData['id'],
+				'test'	=> $test_id,
+				'started_at'	=> date('Y-m-d H:i:s'),
+				'result'		=> 0,
+				'current_question'	=> 1
+		));
+		
+		foreach ($ids as $id) {
+			$id = $questions[$id - 1]['id'];
+			$q = "INSERT INTO user_test_question VALUES ($testUserId, $id)";
+			
+			$testTable->getAdapter()->query($q);
+		}
+		
+		$this->_flashMessenger->setNamespace('success')->addMessage('Test został rozpoczęty');
+		$this->_helper->redirector('question', 'test','default', array(
+					'id'	=> $test_id
+		));
+	}
+	
+	public function questionAction()
+	{
+		$testTable = new Application_Model_Test();
+		$questionTable = new Application_Model_Question();
+		$testUserTable = new Application_Model_User_Test();
+		$answerTable = new Application_Model_User_Test_Answer();
+		
+		$test_id = $this->_getParam('id');
+		
+		// sprawdzam, czy użytkownik nie rozwiązywał tego testu
+		$testUser = $testUserTable->select()
+			->where('user = ?', $this->_userData['id'])
+			->where('test = ?', $test_id)
+			->query()->fetch();
+		
+		$test = $testTable->find($test_id)->getRow(0)->toArray();
+		
+		if (!$testUser) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Nie jesteś zapisany do tego testu');
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		// czy test nie został już wcześniej zakończony?
+		if ($testUser['finished']) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Test został już ukończony');
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		// sprawdzam, czy upłynął limit czasu na odpowiedź
+		$startedAt = new DateTime($testUser['started_at']);
+		$now	   = new DateTime;
+		
+		$startedAt->modify('+' . $test['time'] . ' minutes');
+		
+		if ($startedAt < $now) {
+			$this->_flashMessenger->setNamespace('success')->addMessage('Upłynął wyznaczony czas');
+			$testUserTable->update(array('finished' => true), 'id = ' . $testUser['id']);
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		$form = new Zend_Form;
+		
+		if (!$test['one_page']) {
+			$q2 = 'SELECT *, quest.id as quest_id FROM question as quest LEFT JOIN user_test_question as utq ON utq.question = quest.id WHERE user_test = ' . $testUser['id'];
+			$questions = $questionTable->getAdapter()->query($q2)->fetchAll(); // pobieram wszystkie pytania
+			$question = $questions[$testUser['current_question'] - 1];
+						
+			$q = 'SELECT * FROM question_option WHERE question = ' . $question['quest_id'];
+			$options = $questionTable->getAdapter()->query($q)->fetchAll();
+			
+			$op = array();
+			
+			foreach ($options as $o) {
+				$op[$o['id']]	= $o['text'];
+			}
+			
+			$form->addElement('select', 'answer', array(
+					'label'	=> $question['text'],
+		        	'required' => true,
+					'multiOptions'	=> $op
+		    ));
+			
+			if (count($_POST)) {
+				if ($form->isValid($_POST)){
+					$data = $form->getValues();
+					$points = 0;
+					
+					foreach ($options as $o) {
+						if ($data['answer'] == $o['id']) {
+							
+							if ($o['correct']) {
+								$points = 1;
+							}
+							
+							break;
+						}
+					}
+					
+					$answerData = array(
+							'user_test'	=> $testUser['id'],
+							'question'	=> $question['quest_id'],
+							'answer'	=> $data['answer'],
+							'points'	=> $points
+					);
+					
+					$answerTable->insert($answerData);
+					
+					$testData = array();
+					
+					if ($testUser['current_question'] == count($questions)) {
+						$testData['finished'] = true;
+						
+						// zliczam ilość poprawnych odpowiedzi
+						$answers = $answerTable->getAdapter()
+							->query("SELECT * FROM user_test_answer as uta LEFT JOIN question as quest ON quest.id = uta.question")
+							->fetchAll();
+												
+						// ilość poprawnie udzielonych odpowiedzi
+						$correct = 0;
+						
+						foreach ($answers as $answer) {
+							$options = $answerTable->getAdapter()
+								->query("SELECT * FROM question_option WHERE question = " . $answer['question'])
+								->fetchAll();
+							
+							foreach ($options as $option) {
+								if ($option['id'] == $answer['answer']) {
+									
+									if ($option['correct']) {
+										++$correct;
+									}
+									
+									break;
+								}
+							}
+						}
+						
+						$testData['result'] = round($correct / count($answers), 2) * 100;
+						
+						$testUserTable->update($testData, 'id = ' . $testUser['id']);
+						$this->_flashMessenger->setNamespace('success')->addMessage('Test roztał ukończony');
+						$this->_helper->redirector('index', 'index');
+					} else {
+						$testData['current_question'] = $testUser['current_question'] + 1;
+					}
+					
+					$testUserTable->update($testData, 'id = ' . $testUser['id']);
+					
+					$this->_flashMessenger->setNamespace('success')->addMessage('Świetnie! Teraz odpowiedz na kolejne pytanie');
+					$this->_helper->redirector('question', 'test','default', array(
+								'id'	=> $test_id
+					));
+				}
+			}
+		}
+		
+		$form->addElement('submit', 'submit', array(
+				'label'	=> 'Wyślij odpowiedz'
+		));
+		
+		$this->view->test = $test;
+		
+		$this->view->form = $form;
 	}
 }

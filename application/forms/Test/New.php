@@ -20,6 +20,15 @@ class Application_Form_Test_New extends Zend_Form {
         		)
         ));
         
+        $this->addElement('select', 'one_page', array(
+        		'label' => 'Czy test ma być umieszczony na jednej stronie',
+        		'required' => true,
+        		'multiOptions'	=> array(
+        				'0'	=> 'Nie',
+        				'1'	=> 'Tak'
+        		)
+        ));
+        
         $this->addElement('text', 'points', array(
         		'label' => 'Od ilu procent test jest zaliczony pozytywnie (w %)',
         		'required' => true,

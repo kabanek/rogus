@@ -1,1 +1,22 @@
-dupa
+<h2>Lista testów</h2>
+
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Nazwa testu</th>
+			<th>Data rozpoczęcia</th>
+			<th>Data zakończenia</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach($this->tests as $test): ?>
+		<tr>
+			<td><?php echo $test['name']?></td>
+			<td><?php echo $test['start_at']?></td>
+			<td><?php echo $test['end_at']?></td>
+			<td><a href="<?php echo $this->url(array('action' => 'start', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Rozwiąż test</a></td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>
