@@ -424,4 +424,48 @@ class TestController extends BaseController
 		
 		$this->view->tests = $tests;
 	}
+	
+	function groupsAction()
+	{
+		$testTable = new Application_Model_Test();
+		$userTestTable = new Application_Model_User_Test();
+		
+		$test_id = $this->_getParam('id');
+		
+		$test = $testTable->find($test_id)->getRow(0)->toArray();
+		
+		$groups = $userTestTable->getAdapter()
+			->query('SELECT * FROM test_group as tg LEFT JOIN `group` as gr ON gr.id = tg.group WHERE test = ' . $test_id)
+			->fetchAll();
+		
+		for($i = 0; $i < count($groups); ++$i) {
+			$allUsers = $userTestTable->getAdapter()
+				->query('SELECT * FROM user as u LEFT JOIN user_group as ug ON ug.user = u.id LEFT JOIN test_group as tg ON tg.`group` = ug.`group` LEFT JOIN user_test as ut ON ut.test = tg.test WHERE ug.`group` = ' . $groups[$i]['id'])
+				->fetchAll();
+						
+			$passed = 0;
+			
+			foreach ($allUsers as $user) {
+				if ($user['result'] >= $test['points']) {
+					++$passed;
+				}
+			}
+			
+			$groups[$i]['stats'] = array(
+					'passed'	=> $passed,
+					'not_passed'=> count($allUsers) - $passed
+			);
+			
+			$questions = $userTestTable->getAdapter()
+				->query('SELECT * FROM question as quest LEFT JOIN `test_category` as tg ON tg.category = quest.category WHERE tg.test = ' . $test_id)
+				->fetchAll();
+			
+			// statystyki per pytanie
+		}
+		
+		$test = $testTable->find($test_id);
+		
+		$this->view->groups = $groups;
+		$this->view->test = $test;
+	}
 }

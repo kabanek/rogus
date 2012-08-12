@@ -1,0 +1,36 @@
+<link class="include" rel="stylesheet" type="text/css" href="/css/jquery/jqplot/jquery.jqplot.min.css" />
+<script language="javascript" src="/js/jquery/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.pieRenderer.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.donutRenderer.min.js"></script>
+
+<?php $i = 0; foreach ($this->groups as $group): ?>
+<h1>Grupa '<?php echo $group['name']?>'</h1>
+
+<div id="stats_<?php echo $i ?>">
+
+</div>
+
+<script language="javascript">
+$(document).ready(function(){
+	  var data = [
+	    ['Zaliczyli', <?php echo $group['stats']['passed'] ?>], ['Niezaliczyli', <?php echo $group['stats']['not_passed'] ?>]
+	  ];
+	  var plot1 = jQuery.jqplot ('stats_<?php echo $i ?>', [data], 
+	    {
+	      seriesDefaults: {
+	        // Make this a pie chart.
+	        renderer: jQuery.jqplot.PieRenderer, 
+	        rendererOptions: {
+	          // Put data labels on the pie slices.
+	          // By default, labels show the percentage of the slice.
+	          showDataLabels: true
+	        }
+	      }, 
+	      legend: { show:true, location: 'e' },
+	      width: 10,
+	      height: 200
+	    }
+	  );
+	});
+</script>
+<?php ++$i; endforeach ?>
