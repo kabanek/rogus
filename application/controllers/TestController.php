@@ -184,6 +184,10 @@ class TestController extends BaseController
 	
 	public function startAction()
 	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('register', 'user');
+		}
+		
 		$testTable = new Application_Model_Test();
 		$testUserTable = new Application_Model_User_Test();
 		
@@ -453,17 +457,81 @@ class TestController extends BaseController
 			
 			$groups[$i]['stats'] = array(
 					'passed'	=> $passed,
-					'not_passed'=> count($allUsers) - $passed
+					'not_passed'=> count($allUsers) - $passed,
+					'questions'	=> array(),
+					'users'		=> array(),
 			);
+			
+			// statystyki per pytanie
 			
 			$questions = $userTestTable->getAdapter()
 				->query('SELECT * FROM question as quest LEFT JOIN `test_category` as tg ON tg.category = quest.category WHERE tg.test = ' . $test_id)
 				->fetchAll();
 			
-			// statystyki per pytanie
+			$questionsData = array();
+			
+			foreach ($questions as $question) {
+				$data = $userTestTable->getAdapter()
+					->query('SELECT * FROM user_test_answer as uta LEFT JOIN user_test as ta ON ta.id = uta.user_test LEFT JOIN question_option as ans ON ans.id = uta.answer WHERE test =' . $test_id )
+					->fetchAll();
+				
+				$correct = 0;
+				
+				foreach ($data as $d) {
+					if ($d['correct']) {
+						++$correct;
+					}
+				}
+				
+				if (!isset($questionsData[$question['id']])) {
+					$questionsData[$question['id']] = array(
+							'text'	=> $question['text'],
+							'correct'	=> $correct,
+							'incorrect'	=> count($data) - $correct,
+							'id'		=> $question['id'],
+					);
+				} else {
+					$questionsData[$question['id']]['correct'] += $correct;
+					$questionsData[$question['id']]['incorrect'] += count($data) - $correct;
+				}
+			}
+			
+			$groups[$i]['stats']['questions'] = $questionsData;
+			
+			// statystyki per user
+			$users = $userTestTable->getAdapter()
+				->query('SELECT *, u.id as user_id FROM user_test as ut LEFT JOIN user as u ON u.id = ut.user WHERE ut.test = ' . $test_id)
+				->fetchAll();
+			
+			$usersData = array();
+			
+			foreach ($users as $user) {
+				$answers = $userTestTable->getAdapter()
+					->query('SELECT *, quest.text as question_text, qo.text as answer_text FROM user_test as ut LEFT JOIN  user_test_answer as uta ON uta.user_test = ut.id LEFT JOIN question as quest ON quest.id = uta.question LEFT JOIN question_option as qo ON qo.id = uta.answer WHERE ut.test=' . $test_id . ' AND ut.user = ' . $user['user_id'])
+					->fetchAll();
+				
+				$answersData = array();
+				
+				foreach ($answers as $ans) {
+					$answersData[] = array(
+							'text'		=> $ans['question_text'],
+							'weight'	=> $ans['weight'],
+							'correct'	=> $ans['correct'],
+							'answer_text' => $ans['answer_text'],
+					);
+				}
+				
+				$usersData[] = array(
+						'name'		=> $user['name'],
+						'result'	=> $user['result'],
+						'answers'	=> $answersData,
+				);
+			}
+			
+			$groups[$i]['stats']['users'] = $usersData;
 		}
 		
-		$test = $testTable->find($test_id);
+		$test = $testTable->find($test_id)->getRow(0)->toArray();
 		
 		$this->view->groups = $groups;
 		$this->view->test = $test;

@@ -533,7 +533,7 @@ form {
     background-position: 0 5px;
     background-repeat: no-repeat;
     margin-left: -58px;
-    margin-top: -5px !important;
+    margin-top: 5px !important;
     padding: 0 0 0 18px;
 }
 .footerwhite {

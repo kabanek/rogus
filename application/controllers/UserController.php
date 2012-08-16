@@ -147,4 +147,16 @@ class UserController extends BaseController
 		
 		$this->view->form = $form;
 	}
+	
+	function removeAction()
+	{
+		$userTable = new Application_Model_User;
+		
+		$user_id = $this->_getParam('id');
+		
+		$userTable->delete('id = ' . $user_id);
+		
+		$this->_flashMessenger->setNamespace('success')->addMessage('Użytkownik został usunięty');
+		$this->_helper->redirector('index', 'user');
+	}
 }
