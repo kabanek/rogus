@@ -397,6 +397,75 @@ class TestController extends BaseController
 					));
 				}
 			}
+		} else { // wszystkie pytania na jednej stronie
+			$q2 = 'SELECT *, quest.id as quest_id FROM question as quest LEFT JOIN user_test_question as utq ON utq.question = quest.id WHERE user_test = ' . $testUser['id'];
+			$questions = $questionTable->getAdapter()->query($q2)->fetchAll(); // pobieram wszystkie pytania
+			
+			$i = 0; // iterator
+			
+			foreach ($questions as $question) {
+				$q = 'SELECT * FROM question_option WHERE question = ' . $question['quest_id'];
+				$options = $questionTable->getAdapter()->query($q)->fetchAll();
+					
+				$op = array();
+					
+				foreach ($options as $o) {
+					$op[$o['id']]	= $o['text'];
+				}
+					
+				$form->addElement('select', 'answer_' . $question['id'], array(
+						'label'	=> $question['text'],
+						'required' => true,
+						'multiOptions'	=> $op
+				));
+			}
+			
+			if (count($_POST)) {
+				if ($form->isValid($_POST)){
+					$sum_points = $correct_points = 0;
+					
+					$data = $form->getValues();
+			
+					foreach ($data as $quest => $ans) {
+						$quest = explode('_', $quest);
+						
+						if (count($quest) != 2) {
+							continue;
+						}
+						
+						$q = 'SELECT * FROM question_option WHERE id = ' . $ans;
+						$option = $questionTable->getAdapter()->query($q)->fetch();
+						
+						$q = 'SELECT * FROM question WHERE id = ' . $quest[1];
+						$q = $questionTable->getAdapter()->query($q)->fetch();
+							
+						$answerData = array(
+							'user_test'	=> $testUser['id'],
+							'question'	=> $quest[1],
+							'answer'	=> $ans,
+							'points'	=> $q['weight']
+						);
+						
+						if ($option['correct']) {
+							$correct_points += $q['weight'];
+						}
+						
+						$sum_points += $q['weight'];
+									
+						$answerTable->insert($answerData);
+					}
+					
+					$data = array(
+							'finished'	=> true,
+							'result'	=> number_format(($correct_points / $sum_points) * 100, 2)
+					);
+					
+					$testUserTable->update($data, 'id = ' . $testUser['id']);
+					
+					$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony');
+					$this->_helper->redirector('index', 'index');
+				}
+			}
 		}
 		
 		$form->addElement('submit', 'submit', array(
