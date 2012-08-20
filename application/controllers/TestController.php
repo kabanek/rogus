@@ -348,7 +348,7 @@ class TestController extends BaseController
 									'points'	=> $points
 							);
 								
-							$answerTable->insert($answerData);
+// 							$answerTable->insert($answerData);
 						} else {
 							if ($o['correct']) {
 								$correct = false;
@@ -365,35 +365,52 @@ class TestController extends BaseController
 					
 					if ($testUser['current_question'] == count($questions)) {
 						$testData['finished'] = true;
-						
-						// zliczam ilość poprawnych odpowiedzi
-						$answers = $answerTable->getAdapter()
-							->query("SELECT * FROM user_test_answer as uta LEFT JOIN question as quest ON quest.id = uta.question")
-							->fetchAll();
-												
-						// ilość poprawnie udzielonych odpowiedzi
+																		
+						// suma puntków za poprawnie udzielone odpowiedzi
 						$correct = 0;
+						$all_sum = 0;
 						
-						foreach ($answers as $answer) {
+						$correct_part = true;
+						
+						$questions = $answerTable->getAdapter()
+							->query("SELECT *, quest.id as quest_id FROM user_test_question as utq LEFT JOIN question as quest ON quest.id = utq.question WHERE user_test = " . $testUser['id'])
+							->fetchAll();
+						
+						$questionsData = array();
+						
+						foreach ($questions as $question) {
+							
+							$correct_options = array();	// poprawne odpowiedzi do pytania
+							$user_options = array();   // odpowiedzi udzielone przez użytkownika
+							
+							// pobieram wszystkie poprawne odpowiedzi do pytania
 							$options = $answerTable->getAdapter()
-								->query("SELECT * FROM question_option WHERE question = " . $answer['question'])
+								->query("SELECT * FROM question_option as qo WHERE correct = 1 AND question = " . $question['quest_id'])
 								->fetchAll();
 							
+							// i zapisuję je do tablicy (same ID odpowiedzi)
 							foreach ($options as $option) {
-								if ($option['id'] == $answer['answer']) {
-									
-									if ($option['correct']) {
-										++$correct;
-									}
-									
-									break;
-								}
+								$correct_options[] = $option['id'];
 							}
+							
+							// następnie porównuje je z tymi, które udzielił użytkownik
+							$options = $answerTable->getAdapter()
+								->query("SELECT * FROM  user_test_answer as uta WHERE user_test = " . $testUser['id'] . ' AND question = ' . $question['quest_id'])
+								->fetchAll();
+							
+							// zapisuję ID odpowiedzi użytkownika do tablicy
+							foreach ($options as $option) {
+								$user_options[] = $option['answer'];
+							}
+							
+							if ($user_options == $correct_options) {
+								$correct += $question['weight'];
+							}
+							
+							$all_sum += $question['weight'];
 						}
 						
-						$percent = round($correct / count($answers), 2) * 100;
-						var_dump($percent);
-						die;
+						$percent = round(($correct / $all_sum) * 100);
 						
 						$testData['result'] = $testUser['result'] + $percent;
 						
