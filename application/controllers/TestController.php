@@ -41,6 +41,7 @@ class TestController extends BaseController
 				$questionData = array();
 				$questionData['open'] 				= $_POST['open'];
 				$questionData['name'] 				= $_POST['name'];
+				$questionData['description'] 		= $_POST['description'];
 				$questionData['points'] 			= $_POST['points'];
 				$questionData['start_at'] 			= $_POST['start_at'];
 				$questionData['end_at'] 			= $_POST['end_at'];
@@ -100,6 +101,7 @@ class TestController extends BaseController
 				$questionData = array();
 				$questionData['open'] 				= $_POST['open'];
 				$questionData['name'] 				= $_POST['name'];
+				$questionData['description'] 		= $_POST['description'];
 				$questionData['points'] 			= $_POST['points'];
 				$questionData['start_at'] 			= $_POST['start_at'];
 				$questionData['end_at'] 			= $_POST['end_at'];
@@ -138,13 +140,14 @@ class TestController extends BaseController
 			}
 		} else {			
 			$form->setDefaults(array(
-					'name'	=> $test['name'],
-					'open'	=> $test['open'],
-					'points'	=> $test['points'],
-					'start_at'	=> $test['start_at'],
-					'end_at'	=> $test['end_at'],
-					'time'	=> $test['time'],
-					'one_page'	=> $test['one_page'],
+					'name'			=> $test['name'],
+					'description'	=> $test['description'],
+					'open'			=> $test['open'],
+					'points'		=> $test['points'],
+					'start_at'		=> $test['start_at'],
+					'end_at'		=> $test['end_at'],
+					'time'			=> $test['time'],
+					'one_page'		=> $test['one_page'],
 					'quastions_limit'	=> $test['quastions_limit'],
 			));
 			

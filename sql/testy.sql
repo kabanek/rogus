@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 16 Sie 2012, 18:06
+-- Czas wygenerowania: 20 Sie 2012, 23:26
 -- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.4.4-4~precise+1
 
@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `test` (
   `user` int(11) NOT NULL,
   `open` tinyint(4) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `points` int(11) DEFAULT NULL,
   `start_at` datetime NOT NULL,
   `end_at` datetime NOT NULL,
@@ -195,8 +196,8 @@ CREATE TABLE IF NOT EXISTS `test` (
 -- Zrzut danych tabeli `test`
 --
 
-INSERT INTO `test` (`id`, `user`, `open`, `name`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`, `one_page`) VALUES
-(11, 1, 0, 'Test z podstaw matematyki', 60, '2012-08-16 17:52:32', '2012-08-31 00:00:00', 15, 5, 0);
+INSERT INTO `test` (`id`, `user`, `open`, `name`, `description`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`, `one_page`) VALUES
+(11, 1, 0, 'Test z podstaw matematyki', '<p>test</p>', 60, '2012-08-16 17:52:32', '2012-08-31 00:00:00', 15, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -211,14 +212,14 @@ CREATE TABLE IF NOT EXISTS `test_category` (
   PRIMARY KEY (`id`),
   KEY `test` (`test`,`category`),
   KEY `category` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Zrzut danych tabeli `test_category`
 --
 
 INSERT INTO `test_category` (`id`, `test`, `category`) VALUES
-(1, 11, 8);
+(7, 11, 8);
 
 -- --------------------------------------------------------
 
@@ -233,14 +234,14 @@ CREATE TABLE IF NOT EXISTS `test_group` (
   PRIMARY KEY (`id`),
   KEY `question` (`test`,`group`),
   KEY `group` (`group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Zrzut danych tabeli `test_group`
 --
 
 INSERT INTO `test_group` (`id`, `test`, `group`) VALUES
-(1, 11, 5);
+(7, 11, 5);
 
 -- --------------------------------------------------------
 
@@ -280,13 +281,14 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`,`group`),
   KEY `group` (`group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Zrzut danych tabeli `user_group`
 --
 
 INSERT INTO `user_group` (`id`, `user`, `group`) VALUES
+(18, 1, 5),
 (17, 4, 5),
 (16, 5, 5);
 
@@ -308,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `user_test` (
   KEY `user` (`user`,`test`),
   KEY `current_question` (`current_question`),
   KEY `test` (`test`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
 
 --
 -- Zrzut danych tabeli `user_test`
@@ -334,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `user_test_answer` (
   KEY `user_test` (`user_test`,`question`),
   KEY `question` (`question`),
   KEY `answer` (`answer`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
 
 --
 -- Zrzut danych tabeli `user_test_answer`

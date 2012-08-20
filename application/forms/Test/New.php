@@ -11,6 +11,11 @@ class Application_Form_Test_New extends Zend_Form {
             'required' => true,
        	));
         
+        $this->addElement('textarea', 'description', array(
+        		'label' => 'Opis',
+        		'required' => true,
+        ));
+        
         $this->addElement('select', 'open', array(
         		'label' => 'Czy test ma być ogólnodostępny',
         		'required' => true,
@@ -99,10 +104,6 @@ class Application_Form_Test_New extends Zend_Form {
         
         $this->addElement('submit', 'submit', array(
         		'label' => 'Zapisz',
-        ));
-
-        $this->addElement('hash', 'csrf', array(
-            'ignore' => true,
         ));
     }
 }
