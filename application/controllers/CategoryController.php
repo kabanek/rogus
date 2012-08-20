@@ -4,6 +4,9 @@ require_once 'BaseController.php';
 
 class CategoryController extends BaseController
 {
+	/**
+	 * Dodawanie nowej kategorii
+	 */
 	public function newAction()
 	{
 		if (!$this->_loggedIn) {
@@ -35,6 +38,9 @@ class CategoryController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Lista wszystkich kategorii
+	 */
 	public function indexAction()
 	{
 		if (!$this->_loggedIn) {
@@ -52,6 +58,9 @@ class CategoryController extends BaseController
 		$this->view->categories = $categoryTable->getUserCategories($this->_userData['id']);
 	}
 	
+	/**
+	 * usuwanie
+	 */
 	public function removeAction()
 	{
 		if (!$this->_loggedIn) {
@@ -71,6 +80,9 @@ class CategoryController extends BaseController
 		$this->_helper->redirector('index', 'category');
 	}
 	
+	/**
+	 * Edycja
+	 */
 	public function editAction()
 	{
 		if (!$this->_loggedIn) {
@@ -111,6 +123,9 @@ class CategoryController extends BaseController
 		$this->view->form = $form;
 	}	
 	
+	/**
+	 * Wyświetla wszystkie pytania w kategorii
+	 */
 	public function questionsAction()
 	{
 		if (!$this->_loggedIn) {

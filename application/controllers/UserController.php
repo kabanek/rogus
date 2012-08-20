@@ -4,6 +4,9 @@ require_once 'BaseController.php';
 
 class UserController extends BaseController
 {
+	/**
+	 * Logowanie
+	 */
 	public function loginAction()
 	{
 		$form = new Application_Form_Login;
@@ -31,6 +34,9 @@ class UserController extends BaseController
 		$this->view->form = $form;
 	}
 
+	/**
+	 * Wylogowanie usera
+	 */
 	public function logoutAction()
 	{
 		unset($this->_session->userId);
@@ -38,6 +44,9 @@ class UserController extends BaseController
 		$this->_helper->redirector('index', 'index');
 	}
 	
+	/**
+	 * Formularz rejestracji
+	 */
 	public function registerAction()
 	{
 		$form = new Application_Form_Register;
@@ -63,6 +72,9 @@ class UserController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Użytkownicy
+	 */
 	public function indexAction()
 	{
 		if (!$this->_loggedIn) {
@@ -80,6 +92,9 @@ class UserController extends BaseController
 		$this->view->users = $userTable->fetchAll();
 	}
 	
+	/**
+	 * Edycja usera
+	 */
 	public function editAction()
 	{
 		$userTable = new Application_Model_User;
@@ -148,6 +163,9 @@ class UserController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * usuwanie
+	 */
 	function removeAction()
 	{
 		$userTable = new Application_Model_User;

@@ -4,6 +4,9 @@ require_once 'BaseController.php';
 
 class TestController extends BaseController
 {
+	/**
+	 * Lista wszystkich testów
+	 */
 	public function indexAction()
 	{
 		if (!$this->_loggedIn) {
@@ -21,6 +24,9 @@ class TestController extends BaseController
 		$this->view->tests = $testTable->getUserTests($this->_userData['id']);
 	}
 	
+	/**
+	 * Dodawanie nowego testu
+	 */
 	public function newAction()
 	{
 		if (!$this->_loggedIn) {
@@ -78,6 +84,9 @@ class TestController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Edycja testu
+	 */
 	public function editAction()
 	{
 		if (!$this->_loggedIn) {
@@ -180,6 +189,9 @@ class TestController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Usuwanie testu
+	 */
 	public function removeAction()
 	{
 		$testTable = new Application_Model_Test();
@@ -189,6 +201,9 @@ class TestController extends BaseController
 		$this->_helper->redirector('index', 'test');
 	}
 	
+	/**
+	 * Rozpoczynanie testu przez użytkownika
+	 */
 	public function startAction()
 	{
 		if (!$this->_loggedIn) {
@@ -206,8 +221,10 @@ class TestController extends BaseController
 			->where('test = ?', $test_id)
 			->query()->fetch();
 		
+		// szukam rekordu z testem mając jego ID
 		$test = $testTable->find($test_id)->getRow(0)->toArray();
 		
+		// zabezpieczenie testu - tylko wybrane adresu IP
 		if($test['ip_mask'] && $test['ip_mask'] != 'x.x.x.x') {
 			$mask = explode('.', $test['ip_mask']);
 			$ip = explode('.', $_SERVER['SERVER_ADDR']);
@@ -244,12 +261,13 @@ class TestController extends BaseController
 					'id'	=> $test_id
 			));
 		}
-				
+
+		// pobieram wszystkie kategorie pytań
 		$categories = $testTable->getAdapter()->query('SELECT * FROM test_category as tc WHERE test = ' . $test['id'])->fetchAll();
 		
 		$ids = array();
 		
-		foreach ($categories as $cat) {
+		foreach ($categories as $cat) { // i zapisuję do tablicy ich identyfikatory
 			$ids[] = $cat['category'];
 		}
 		
@@ -259,8 +277,10 @@ class TestController extends BaseController
 		
 		$count = $test['quastions_limit'] < count($questions) ? $test['quastions_limit'] : count($questions);
 		
+		// tutaj "mieszam" tablicą z pytaniami po to, żeby za chwilę wybrać losowe pytania do testu
 		$list = array_flip(range(1, count($questions)));
 		
+		// tablica została już wymieszana (patrz wyżej), to mogę już spokojnie wybrać X pytań do testu
 		$ids = array_rand($list, $count);
 		
 		$testUserId = $testUserTable->insert(array(
@@ -271,6 +291,7 @@ class TestController extends BaseController
 				'current_question'	=> 1
 		));
 		
+		// zapisuję do bazy danych wszystkie pytania, które zostały wylosowane
 		foreach ($ids as $id) {
 			$id = $questions[$id - 1]['id'];
 			$q = "INSERT INTO user_test_question VALUES ($testUserId, $id)";
@@ -278,6 +299,7 @@ class TestController extends BaseController
 			$testTable->getAdapter()->query($q);
 		}
 		
+		// i przekierowuję na pierwsze pytanie
 		$this->_flashMessenger->setNamespace('success')->addMessage('Test został rozpoczęty');
 		$this->_helper->redirector('question', 'test','default', array(
 					'id'	=> $test_id
@@ -326,7 +348,7 @@ class TestController extends BaseController
 		
 		$form = new Zend_Form;
 		
-		if (!$test['one_page']) {
+		if (!$test['one_page']) { // czyli pytania mają wyświetlaś się pojedyńczo: jedno pytanie - jedna strona
 			$q2 = 'SELECT *, quest.id as quest_id FROM question as quest LEFT JOIN user_test_question as utq ON utq.question = quest.id WHERE user_test = ' . $testUser['id'];
 			$questions = $questionTable->getAdapter()->query($q2)->fetchAll(); // pobieram wszystkie pytania
 			$question = $questions[$testUser['current_question'] - 1];
@@ -340,6 +362,7 @@ class TestController extends BaseController
 				$op[$o['id']]	= $o['text'];
 			}
 			
+			// dodaję do formularza listę z checkboxami, w których są opcje odpowiedzi dla pytania
 			$form->addElement('multiCheckbox', 'answer', array(
 					'label'	=> $question['text'],
 		        	'required' => true,
@@ -347,13 +370,14 @@ class TestController extends BaseController
 					'multiOptions'	=> $op
 		    ));
 			
-			if (count($_POST)) {
-				if ($form->isValid($_POST)){
+			if (count($_POST)) { // jeśli formularz został wysłany
+				if ($form->isValid($_POST)){	// i czy jest prawidłowy (czyli np została zaznaczona co najmniej jedna opcja)
 					$data = $form->getValues();
 					$points = 0;
 					$correct = true;
 					$correct_count = 0;
-										
+					
+					// przeszukuje tablicę z opcjami odpowiedzi użytkownika i szukam te, które są prawidłowe
 					foreach ($options as $o) {
 						if (in_array($o['id'], $data['answer'])) {
 							
@@ -368,7 +392,7 @@ class TestController extends BaseController
 									'points'	=> $points
 							);
 								
-// 							$answerTable->insert($answerData);
+							$answerTable->insert($answerData);
 						} else {
 							if ($o['correct']) {
 								$correct = false;
@@ -383,7 +407,7 @@ class TestController extends BaseController
 					
 					$testData = array();
 					
-					if ($testUser['current_question'] == count($questions)) {
+					if ($testUser['current_question'] == count($questions)) { // czyli użytkownik odpowiedział na ostatnie pytanie
 						$testData['finished'] = true;
 																		
 						// suma puntków za poprawnie udzielone odpowiedzi
@@ -430,6 +454,7 @@ class TestController extends BaseController
 							$all_sum += $question['weight'];
 						}
 						
+						// obliczam ile procent miał dobrych odpowiedzi
 						$percent = round(($correct / $all_sum) * 100);
 						
 						$testData['result'] = $testUser['result'] + $percent;
@@ -472,12 +497,16 @@ class TestController extends BaseController
 				));
 			}
 			
-			if (count($_POST)) {
-				if ($form->isValid($_POST)){
+			if (count($_POST)) {// formularz został wysłany
+				if ($form->isValid($_POST)){ // i jest prawidłowy
 					$sum_points = $correct_points = 0;
 					
 					$data = $form->getValues();
 			
+					/**
+					 * Tutaj przechodzę po wszystkich pytaniach w teście
+					 * Następnie pobieram listę wszystkich poprawnych odpowiedzi dla pytania i porównuję je z tymi podanymi przez użytkownika
+					 */
 					foreach ($data as $quest => $ans) {
 						$quest = explode('_', $quest);
 						
@@ -538,8 +567,10 @@ class TestController extends BaseController
 						}						
 					}
 					
+					// obliczam procent dobrych odpowiedzi
 					$percent = number_format(($correct_points / $sum_points) * 100, 2);
 					
+					// zapisuję wynik
 					$data = array(
 							'finished'	=> true,
 							'result'	=> $percent
@@ -583,6 +614,9 @@ class TestController extends BaseController
 		$this->view->tests = $tests;
 	}
 	
+	/**
+	 * Statystyki
+	 */
 	function groupsAction()
 	{
 		$testTable = new Application_Model_Test();

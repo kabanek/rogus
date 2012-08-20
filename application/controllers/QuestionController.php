@@ -4,6 +4,9 @@ require_once 'BaseController.php';
 
 class QuestionController extends BaseController
 {
+	/**
+	 * Nowe pytanie
+	 */
 	public function newAction()
 	{
 		if (!$this->_loggedIn) {
@@ -72,6 +75,9 @@ class QuestionController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Lista pytań
+	 */
 	public function indexAction()
 	{
 		if (!$this->_loggedIn) {
@@ -89,6 +95,9 @@ class QuestionController extends BaseController
 		$this->view->questions = $question->getUserQuestions($this->_userData['id']);
 	}
 	
+	/**
+	 * Usuwanie
+	 */
 	public function removeAction()
 	{
 		if (!$this->_loggedIn) {
@@ -109,6 +118,9 @@ class QuestionController extends BaseController
 		$this->_helper->redirector('index', 'question');
 	}
 	
+	/**
+	 * Edycja
+	 */
 	public function editAction()
 	{
 		if (!$this->_loggedIn) {
@@ -202,6 +214,9 @@ class QuestionController extends BaseController
 		$this->view->form = $form;
 	}
 	
+	/**
+	 * Pobieranie załącznika
+	 */
 	public function attachementAction()
 	{
 		$questionTable = new Application_Model_Question;
