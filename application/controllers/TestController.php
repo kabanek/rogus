@@ -144,6 +144,7 @@ class TestController extends BaseController
 					'start_at'	=> $test['start_at'],
 					'end_at'	=> $test['end_at'],
 					'time'	=> $test['time'],
+					'one_page'	=> $test['one_page'],
 					'quastions_limit'	=> $test['quastions_limit'],
 			));
 			
@@ -319,9 +320,10 @@ class TestController extends BaseController
 				$op[$o['id']]	= $o['text'];
 			}
 			
-			$form->addElement('select', 'answer', array(
+			$form->addElement('multiCheckbox', 'answer', array(
 					'label'	=> $question['text'],
 		        	'required' => true,
+					'extended'	=> true,
 					'multiOptions'	=> $op
 		    ));
 			
@@ -329,26 +331,35 @@ class TestController extends BaseController
 				if ($form->isValid($_POST)){
 					$data = $form->getValues();
 					$points = 0;
-					
+					$correct = true;
+					$correct_count = 0;
+										
 					foreach ($options as $o) {
-						if ($data['answer'] == $o['id']) {
+						if (in_array($o['id'], $data['answer'])) {
 							
-							if ($o['correct']) {
-								$points = 1;
+							if (!$o['correct']) {
+								$correct = false;
 							}
 							
-							break;
+							$answerData = array(
+									'user_test'	=> $testUser['id'],
+									'question'	=> $question['quest_id'],
+									'answer'	=> $o['id'],
+									'points'	=> $points
+							);
+								
+							$answerTable->insert($answerData);
+						} else {
+							if ($o['correct']) {
+								$correct = false;
+							}
 						}
+						
 					}
 					
-					$answerData = array(
-							'user_test'	=> $testUser['id'],
-							'question'	=> $question['quest_id'],
-							'answer'	=> $data['answer'],
-							'points'	=> $points
-					);
-					
-					$answerTable->insert($answerData);
+					if ($correct) {
+						$points = $question['weight'];
+					}
 					
 					$testData = array();
 					
@@ -380,7 +391,11 @@ class TestController extends BaseController
 							}
 						}
 						
-						$testData['result'] = round($correct / count($answers), 2) * 100;
+						$percent = round($correct / count($answers), 2) * 100;
+						var_dump($percent);
+						die;
+						
+						$testData['result'] = $testUser['result'] + $percent;
 						
 						$testUserTable->update($testData, 'id = ' . $testUser['id']);
 						$this->_flashMessenger->setNamespace('success')->addMessage('Test roztał ukończony');
@@ -413,7 +428,7 @@ class TestController extends BaseController
 					$op[$o['id']]	= $o['text'];
 				}
 					
-				$form->addElement('select', 'answer_' . $question['id'], array(
+				$form->addElement('multiCheckbox', 'answer_' . $question['id'], array(
 						'label'	=> $question['text'],
 						'required' => true,
 						'multiOptions'	=> $op
@@ -433,31 +448,64 @@ class TestController extends BaseController
 							continue;
 						}
 						
-						$q = 'SELECT * FROM question_option WHERE id = ' . $ans;
-						$option = $questionTable->getAdapter()->query($q)->fetch();
+						$q = 'SELECT * FROM question_option WHERE question = ' . $quest[1];
+						$options = $questionTable->getAdapter()->query($q)->fetchAll();
+						
+						$correct = true;
+						$correct_count = 0;
+						
+						$datasToInsert = array();
+												
+						foreach ($options as $o) {
+							$points = 0;
+							
+							if (in_array($o['id'], $ans)) {
+									
+								if (!$o['correct']) {
+									$correct = false;
+								}
+								
+								$datasToInsert[] = array(
+										'user_test'	=> $testUser['id'],
+										'question'	=> $quest[1],
+										'answer'	=> $o['id'],
+								);
+									
+							} else {
+								if ($o['correct']) {
+									$correct = false;
+								}
+							}
+							
+						}
+							
+						if ($correct) {
+							$points = $question['weight'];
+						}
 						
 						$q = 'SELECT * FROM question WHERE id = ' . $quest[1];
 						$q = $questionTable->getAdapter()->query($q)->fetch();
 							
-						$answerData = array(
-							'user_test'	=> $testUser['id'],
-							'question'	=> $quest[1],
-							'answer'	=> $ans,
-							'points'	=> $q['weight']
-						);
-						
-						if ($option['correct']) {
+						if ($correct) {
 							$correct_points += $q['weight'];
 						}
 						
 						$sum_points += $q['weight'];
-									
-						$answerTable->insert($answerData);
+						
+						foreach ($datasToInsert as $insert) {
+							if ($correct) {
+								$insert['points'] = $question['weight'];
+							}
+							
+							$answerTable->insert($insert);
+						}						
 					}
+					
+					$percent = number_format(($correct_points / $sum_points) * 100, 2);
 					
 					$data = array(
 							'finished'	=> true,
-							'result'	=> number_format(($correct_points / $sum_points) * 100, 2)
+							'result'	=> $percent
 					);
 					
 					$testUserTable->update($data, 'id = ' . $testUser['id']);
