@@ -48,6 +48,7 @@ class TestController extends BaseController
 				$questionData['time'] 				= $_POST['time'];
 				$questionData['quastions_limit'] 	= $_POST['quastions_limit'];
 				$questionData['one_page'] 			= $_POST['one_page'];
+				$questionData['ip_mask'] 			= $_POST['ip_mask'];
 				$questionData['user'] 				= $this->_userData['id'];
 								
 				$test_id = $testTable->insert($questionData);
@@ -108,6 +109,7 @@ class TestController extends BaseController
 				$questionData['time'] 				= $_POST['time'];
 				$questionData['quastions_limit'] 	= $_POST['quastions_limit'];
 				$questionData['one_page'] 			= $_POST['one_page'];
+				$questionData['ip_mask'] 			= $_POST['ip_mask'];
 	
 				$testTable->update($questionData, 'id = ' . $this->_getParam('id'));
 				$testCategoryTable = new Application_Model_Test_Category;
@@ -149,6 +151,7 @@ class TestController extends BaseController
 					'time'			=> $test['time'],
 					'one_page'		=> $test['one_page'],
 					'quastions_limit'	=> $test['quastions_limit'],
+					'ip_mask'		=> $test['ip_mask'],
 			));
 			
 			$testCategoryTable = new Application_Model_Test_Category;
@@ -204,6 +207,20 @@ class TestController extends BaseController
 			->query()->fetch();
 		
 		$test = $testTable->find($test_id)->getRow(0)->toArray();
+		
+		if($test['ip_mask'] && $test['ip_mask'] != 'x.x.x.x') {
+			$mask = explode('.', $test['ip_mask']);
+			$ip = explode('.', $_SERVER['SERVER_ADDR']);
+			
+			for ($i = 0; $i < count($mask); ++$i) {
+				if ($mask[$i] != 'x' && $ip[$i] != $mask[$i]) {
+					
+					$this->_flashMessenger->setNamespace('error')->addMessage('Twój numer IP nie pozwala na możliwość rozwiązania tego testu');
+					$this->_helper->redirector('index', 'index');
+				}
+			}
+			
+		}
 		
 		// sprawdzam, czy data rozpoczęcia testu pozwala na jego rozwiązywanie
 		$now	   = new DateTime;

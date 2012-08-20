@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 20 Sie 2012, 23:26
+-- Czas wygenerowania: 20 Sie 2012, 23:44
 -- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.4.4-4~precise+1
 
@@ -188,6 +188,7 @@ CREATE TABLE IF NOT EXISTS `test` (
   `time` int(11) NOT NULL,
   `quastions_limit` int(11) NOT NULL,
   `one_page` int(11) NOT NULL,
+  `ip_mask` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
@@ -196,8 +197,8 @@ CREATE TABLE IF NOT EXISTS `test` (
 -- Zrzut danych tabeli `test`
 --
 
-INSERT INTO `test` (`id`, `user`, `open`, `name`, `description`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`, `one_page`) VALUES
-(11, 1, 0, 'Test z podstaw matematyki', '<p>test</p>', 60, '2012-08-16 17:52:32', '2012-08-31 00:00:00', 15, 5, 0);
+INSERT INTO `test` (`id`, `user`, `open`, `name`, `description`, `points`, `start_at`, `end_at`, `time`, `quastions_limit`, `one_page`, `ip_mask`) VALUES
+(11, 1, 0, 'Test z podstaw matematyki', '<p>test</p>', 60, '2012-08-16 17:52:32', '2012-08-31 00:00:00', 15, 5, 0, '127.0.1.x');
 
 -- --------------------------------------------------------
 
@@ -212,14 +213,14 @@ CREATE TABLE IF NOT EXISTS `test_category` (
   PRIMARY KEY (`id`),
   KEY `test` (`test`,`category`),
   KEY `category` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Zrzut danych tabeli `test_category`
 --
 
 INSERT INTO `test_category` (`id`, `test`, `category`) VALUES
-(7, 11, 8);
+(8, 11, 8);
 
 -- --------------------------------------------------------
 
@@ -234,14 +235,14 @@ CREATE TABLE IF NOT EXISTS `test_group` (
   PRIMARY KEY (`id`),
   KEY `question` (`test`,`group`),
   KEY `group` (`group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Zrzut danych tabeli `test_group`
 --
 
 INSERT INTO `test_group` (`id`, `test`, `group`) VALUES
-(7, 11, 5);
+(8, 11, 5);
 
 -- --------------------------------------------------------
 

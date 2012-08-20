@@ -102,6 +102,12 @@ class Application_Form_Test_New extends Zend_Form {
         		'value'	=> 10
         ));
         
+        $this->addElement('text', 'ip_mask', array(
+        		'label' => 'Maska adresów IP, które mogą rozwiązywać test',
+        		'required' => true,
+        		'value'	=> 'x.x.x.x'
+        ));
+        
         $this->addElement('submit', 'submit', array(
         		'label' => 'Zapisz',
         ));
