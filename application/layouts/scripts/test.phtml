@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><?php echo $this->config->getConfig('site/name') ?></title>
+	<script language="javascript" src="<?php echo $this->baseUrl('js/jquery.min.js') ?>"></script>
+	<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jquery-ui-1.8.21.custom.min.js') ?>"></script>
+	<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jquery-ui-timepicker-addon.js') ?>"></script>
+	<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jquery.hoverIntent.minified.js') ?>"></script>
+	<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jquery.dcverticalmegamenu.1.3.js') ?>"></script>
+	
+	<script language="javascript">
+	function sessionTimer() {
+	    sessionTimeLeft -= 1000; // odejmuję sekundę
+	    
+	    var timeText = '';
+	    
+	    if (sessionTimeLeft > 60000) {
+	        var minutes = parseInt(sessionTimeLeft / 60000);
+	        var secs = parseInt((sessionTimeLeft - minutes * 60000) / 1000);
+	        
+	        timeText = minutes + ' minut i ' + secs + ' sekund';
+	    } else if (sessionTimeLeft < 1000) {
+	        sessionTimerElement.html('Czas upłynął');
+	    } else {
+	        timeText = parseInt(sessionTimeLeft / 1000) + ' sekund';
+	    }
+	    
+	    sessiotTimeLeftElement.html(timeText);
+	    setTimeout("sessionTimer()",1000);
+
+        console.log(sessionTimeLeft);
+	}
+	
+		$(document).ready(function(){
+			$('.confirm').click(function(){
+				if (!confirm('Na pewno?')) {
+					return false;
+				}
+			});
+
+			$('#mega-1').dcVerticalMegaMenu();
+
+			sessionTimeLeft = <?php echo $_SESSION['time_left'] ?> * 1000;
+
+		    setTimeout("sessionTimer()",1000);
+		    sessiotTimeLeftElement = $('#timer-left-time');
+		    sessionTimerElement = $('#sesion-timer');
+		});
+	</script>
+	<meta name="description" content="Happy Family" />
+	<meta name="keywords" content="Happy Family" />
+	<link href="<?php echo $this->baseUrl('css/style.css') ?>" rel="stylesheet" type="text/css" />
+	<link href="<?php echo $this->baseUrl('css/jquery/base/jquery.ui.all.css') ?>" rel="stylesheet" type="text/css" />
+</head>
+
+<body><script language="javascript" src="<?php echo $this->baseUrl('images/menu.js') ?>"></script>
+
+<div id="wrapper">
+
+<!-- header -->
+  <div class="header">
+    <div class="headertop"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+    <div class="floatleft logo"><a href="<?php echo $this->baseUrl('') ?>" title="Home"><img src="<?php echo $this->baseUrl('images/logo.jpg') ?>" alt="Home" border="0" /></a></div>
+    <div class="floatleft head2"><img src="<?php echo $this->baseUrl('images/innerhead.jpg') ?>" alt="" width="580" border="0" /></div>
+  </div>
+  <div class="header"><img src="<?php echo $this->baseUrl('images/innerhead2.jpg') ?>" alt="" border="0" /></div>
+<!-- /header -->
+
+<!-- middlecontent -->  
+  <div class="innerblack">
+  <div class="innergrey">
+  <div class="innerbg"> 
+     <div class="innermenugrey"> 
+            <div class="floatleft menucontainerlightblue">
+            <div class="menubg">   
+                <ul>
+                  <li><a href="<?php echo $this->baseUrl('') ?>" class="home">&nbsp;</a></li>
+                  
+                 <?php if ($this->loggedIn):?>
+                  <li><a href="<?php echo $this->url(array('action' => 'logout', 'controller' => 'user'), NULL, 'default') ?>" class="services">&nbsp;</a></li>
+                 <?php else:?>
+                 <li><a href="<?php echo $this->url(array('action' => 'register', 'controller' => 'user'), NULL, 'default') ?>" class="solutions">&nbsp;</a></li>
+                 <?php endif ?>
+                </ul>     
+            </div>
+            <div class="floatleft phonenumber"><img src="<?php echo $this->baseUrl('images/phonenumber.jpg') ?>" alt="" border="0" /></div>
+            
+            <div class="innerspacer1"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+            <div class="innerspacer2"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+     </div>
+     
+  </div>
+  
+     <div class="innerspacer3"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+     
+     <div class="innerspacerdiv1"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+     <div class="innerleft">
+       <div class="product_division"><img src="<?php echo $this->baseUrl('images/product_division.jpg') ?>" alt="" border="0" /></div>
+       
+       <div class="innerround"><img src="<?php echo $this->baseUrl('images/innerround.jpg') ?>" alt="" border="0" /></div>
+       
+       Do końca testu pozostało: <span id="timer-left-time">time</span>.
+              
+       <div class="innerleft2"><img src="<?php echo $this->baseUrl('images/innerleft2.jpg') ?>" alt="" border="0" /></div>
+              
+     </div>
+
+     <div class="innercontent">
+     
+       
+       <div class="main_con">
+
+		<?php if ($this->flashMessager->setNamespace('success')->hasMessages()): ?>
+		    <div class="message success">
+		    <?php foreach ($this->flashMessager->getMessages() as $msg): ?>
+		        <?php echo $msg ?>
+		    <?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
+		
+		<?php if ($this->flashMessager->setNamespace('error')->hasMessages()): ?>
+		    <div class="message error">
+		    <?php foreach ($this->flashMessager->getMessages() as $msg): ?>
+		        <?php echo $msg ?>
+		    <?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
+       
+        <?php echo $this->layout()->content; ?>
+       </div>
+     </div>
+     <div class="innerfooterspacer"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+  </div>   
+  
+  </div> 
+  </div>       
+  
+<!-- /middlecontent -->
+
+<!-- footer : maintain license info see info at bottom  -->
+<div class="innerfooterblack">
+  <div class="innerfootergrey">
+    <div class="innerfooterlightgrey">  
+        <div class="innerfootercontent" style="text-align:right;"> 
+       <div style="margin-top:62px; margin-right:10px;" id="footer_copyright">
+        Do Not Remove > 
+       <!-- Do not remove modify or any way change this piece of code - GNU Licensing, Model Release Etc covered by this link -->
+      <a href="http://www.templatesfreeflash.com" style="color:#666; text-decoration:none;">Free Flash Templates</a> | <a href="http://www.mikeylong.com/templates/download_template.html" style="color:#666; text-decoration:none;"><img src="http://www.mikeylong.com/testing/debug/copy.jpg" ALT="Seattle Web Design" border="0"></a><!-- Do not remove this piece of code - GNU Licensing, Model Release Etc covered by this link -->
+       </div>
+      </div> 
+    </div>  
+  </div>
+</div>
+
+<div class="innerfooterbottom"><img src="<?php echo $this->baseUrl('images/spacer.gif') ?>" alt="" border="0" /></div>
+
+</div>
+</body>
+</html>

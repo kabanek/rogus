@@ -342,9 +342,16 @@ class TestController extends BaseController
 		
 		if ($startedAt < $now) {
 			$this->_flashMessenger->setNamespace('success')->addMessage('Upłynął wyznaczony czas');
+			$_SESSION['time_left'] = 0;
 			$testUserTable->update(array('finished' => true), 'id = ' . $testUser['id']);
 			$this->_helper->redirector('index', 'index');
 		}
+
+		$timeLeft = (strtotime($startedAt->format('Y-m-d H:i:s')) - strtotime($now->format('Y-m-d H:i:s')) );
+
+		$_SESSION['time_left'] = $timeLeft;
+
+		$this->_helper->layout->setLayout('test'); // zmieniam szablon strony ze zmienionym lewym menu
 		
 		$form = new Zend_Form;
 		
