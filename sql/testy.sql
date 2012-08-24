@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 20 Sie 2012, 23:44
+-- Czas wygenerowania: 24 Sie 2012, 18:33
 -- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.4.4-4~precise+1
 
@@ -255,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(64) NOT NULL,
+  `salt` varchar(64) NOT NULL,
   `admin` tinyint(4) NOT NULL,
   `creditals` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
@@ -264,10 +265,10 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Zrzut danych tabeli `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `admin`, `creditals`) VALUES
-(1, 'admin', 'kontakt@bkielbasa.pl', '21232f297a57a5a743894a0e4a801fc3', 1, 1),
-(4, 'Jan Nowak', 'jan@nowak.pl', '4ba3b8341292d74a95e23de96d3dabcc', 0, 0),
-(5, 'Karal Kowalksi', 'karol@kowalski.pl', '2e1fb8320f545f47b0528c5af6ae8f6b', 0, 0);
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `salt`, `admin`, `creditals`) VALUES
+(1, 'admin', 'kontakt@bkielbasa.pl', '05f543b377ab634fdeaf7f61118710dd', '47bce5c74f589f4867dbd57e9ca9f808', 1, 1),
+(4, 'Jan Nowak', 'jan@nowak.pl', '35ae23a17160785d7b16431031f1bbf0', '08f8e0260c64418510cefb2b06eee5cd', 0, 0),
+(5, 'Karal Kowalksi', 'karol@kowalski.pl', '7c337972e922645aae69e28acf54b00f', '9df62e693988eb4e1e1444ece0578579', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -311,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `user_test` (
   KEY `user` (`user`,`test`),
   KEY `current_question` (`current_question`),
   KEY `test` (`test`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=55 ;
 
 --
 -- Zrzut danych tabeli `user_test`
@@ -319,7 +320,8 @@ CREATE TABLE IF NOT EXISTS `user_test` (
 
 INSERT INTO `user_test` (`id`, `user`, `test`, `started_at`, `result`, `current_question`, `finished`) VALUES
 (51, 4, 11, '2012-08-16 17:53:23', 60, 5, 1),
-(52, 5, 11, '2012-08-16 17:58:01', 40, 5, 1);
+(52, 5, 11, '2012-08-16 17:58:01', 40, 5, 1),
+(54, 1, 11, '2012-08-24 18:25:30', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -337,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `user_test_answer` (
   KEY `user_test` (`user_test`,`question`),
   KEY `question` (`question`),
   KEY `answer` (`answer`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Zrzut danych tabeli `user_test_answer`
@@ -382,7 +384,12 @@ INSERT INTO `user_test_question` (`user_test`, `question`) VALUES
 (52, 18),
 (52, 19),
 (52, 20),
-(52, 24);
+(52, 24),
+(54, 19),
+(54, 22),
+(54, 23),
+(54, 24),
+(54, 26);
 
 --
 -- Ograniczenia dla zrzutów tabel

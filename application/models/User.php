@@ -15,8 +15,7 @@ class Application_Model_User extends Zend_Db_Table implements Zend_Auth_Adapter_
 	*/
     public function check($email, $password)
     {
-        $password = md5($password);
-        $query = "SELECT * FROM user WHERE email LIKE '$email' AND password LIKE '$password'";
+        $query = "SELECT * FROM user WHERE email LIKE '$email' AND password LIKE MD5(CONCAT('$password', salt))";
         
         return $this->getAdapter()->query($query)->fetch();
     }
@@ -25,7 +24,7 @@ class Application_Model_User extends Zend_Db_Table implements Zend_Auth_Adapter_
     {
         $user = $this->select()
             ->where('email = ?', $this->email)
-            ->where('password = ?', md5($this->password))
+            ->where('password = md5(CONCAT(?, salt))', $this->password)
             ->query()
             ->fetch();
 

@@ -58,8 +58,9 @@ class UserController extends BaseController
 				$data = $_POST;
 				unset($data['submit'], $data['password2']);
 				$data['creditals'] = 0;
+				$data = md5(time());
 				
-				$data['password'] = md5($data['password']);
+				$data['password'] = md5($data['password'] . $salt);
 				
 				$userTable = new Application_Model_User;
 				$userTable->insert($data);
