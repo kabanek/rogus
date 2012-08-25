@@ -121,9 +121,8 @@ class UserController extends BaseController
 						));
 					}
 					
-					$data['password'] = md5($values['password']);
-				}
-				
+					$data['password'] = md5($values['password'] . $user['salt']);
+				}				
 				
 				$userTable->update($data, 'id = ' . $user_id);
 				
@@ -161,6 +160,41 @@ class UserController extends BaseController
 			));
 		}
 		
+		$this->view->form = $form;
+	}
+
+	function addAction()
+	{
+		$form = new Application_Form_User_Add;
+
+		if (count($_POST)) {
+			if ($form->isValid($_POST)) {
+				$userData = $form->getValues();
+				$groups = $userData['groups'];
+
+				unset($userData['password2'], $userData['submit'], $userData['groups']);
+
+				$userData['salt'] = md5(time());
+
+				$userData['password'] = md5($userData['password'] . $userData['salt']);
+
+				$userTable = new Application_Model_User;
+				$userGroupTable = new Application_Model_User_Group;
+
+				$id = $userTable->insert($userData);
+
+				foreach ($groups as $group) {
+					$userGroupTable->insert(array(
+						'user'	=> $id,
+						'group'	=> $group
+					));
+				}
+
+				$this->_flashMessenger->setNamespace('success')->addMessage('Użytkownik został dodany poprawnie');
+				$this->_helper->redirector('index', 'user');
+			}
+		}
+
 		$this->view->form = $form;
 	}
 	
