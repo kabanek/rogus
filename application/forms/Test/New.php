@@ -39,6 +39,26 @@ class Application_Form_Test_New extends Zend_Form {
         		'required' => true,
         		'value'	=> 50
         ));
+
+        $this->addElement('text', '3_5', array(
+                'label' => 'Od ilu procent test ocena 3.5 (w %)',
+                'required' => true,
+        ));
+
+        $this->addElement('text', '4', array(
+                'label' => 'Od ilu procent test jest ocena 4 (w %)',
+                'required' => true,
+        ));
+
+        $this->addElement('text', '4_5', array(
+                'label' => 'Od ilu procent test jest ocena 4.5 (w %)',
+                'required' => true,
+        ));
+
+        $this->addElement('text', '5', array(
+                'label' => 'Od ilu procent test jest ocena 5 (w %)',
+                'required' => true,
+        ));
         
         $this->addElement('text', 'start_at', array(
         		'label' => 'Czas rozpoczęcia testu',

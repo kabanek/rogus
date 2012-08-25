@@ -49,6 +49,10 @@ class TestController extends BaseController
 				$questionData['name'] 				= $_POST['name'];
 				$questionData['description'] 		= $_POST['description'];
 				$questionData['points'] 			= $_POST['points'];
+				$questionData['3_5'] 				= $_POST['3_5'];
+				$questionData['4'] 					= $_POST['4'];
+				$questionData['4_5'] 				= $_POST['4_5'];
+				$questionData['5'] 					= $_POST['5'];
 				$questionData['start_at'] 			= $_POST['start_at'];
 				$questionData['end_at'] 			= $_POST['end_at'];
 				$questionData['time'] 				= $_POST['time'];
@@ -113,6 +117,10 @@ class TestController extends BaseController
 				$questionData['name'] 				= $_POST['name'];
 				$questionData['description'] 		= $_POST['description'];
 				$questionData['points'] 			= $_POST['points'];
+				$questionData['3_5'] 				= $_POST['3_5'];
+				$questionData['4'] 					= $_POST['4'];
+				$questionData['4_5'] 				= $_POST['4_5'];
+				$questionData['5'] 					= $_POST['5'];
 				$questionData['start_at'] 			= $_POST['start_at'];
 				$questionData['end_at'] 			= $_POST['end_at'];
 				$questionData['time'] 				= $_POST['time'];
@@ -155,6 +163,10 @@ class TestController extends BaseController
 					'description'	=> $test['description'],
 					'open'			=> $test['open'],
 					'points'		=> $test['points'],
+					'3_5'			=> $test['3_5'],
+					'4'				=> $test['4'],
+					'4_5'			=> $test['4_5'],
+					'5'				=> $test['5'],
 					'start_at'		=> $test['start_at'],
 					'end_at'		=> $test['end_at'],
 					'time'			=> $test['time'],

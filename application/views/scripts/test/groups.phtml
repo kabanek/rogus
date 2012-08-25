@@ -74,6 +74,32 @@ $(document).ready(function(){
 
 	<p>Ilość uzyskanych procent dobrych odpowiedzi: <span style="color: <?php if ($user['result'] >= $this->test['points']): ?>green<?php else: ?>red<?php endif ?>"><?php echo $user['result']?>%</span> (wymagane <?php echo $this->test['points']?>% żeby zaliczyć)</p>
 
+	<p>Uzyskana ocena: 
+		<?php
+			if (!empty($this->test['3_5'])) {
+				if ($this->test['5'] <= $user['result']) {
+					echo "5";
+				} elseif  ($this->test['4_5'] <= $user['result']) {
+					echo "4.5";
+				} elseif  ($this->test['4'] <= $user['result']) {
+					echo "4";
+				} elseif  ($this->test['3_5'] <= $user['result']) {
+					echo "3.5";
+				} elseif  ($this->test['points'] <= $user['result']) {
+					echo "3";
+				} else {
+					echo "2.0";
+				}
+			} else {
+				if ($user['result'] >= $this->test['points']) {
+					echo "Zaliczone";
+				} else {
+					echo "Niezaliczone";
+				}
+			}
+		?>
+	</p>
+
 	<p>Pytania oraz odpowiedzi na pytania: </p>
 	
 	<ul class="answers-list">
