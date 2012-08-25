@@ -212,4 +212,51 @@ class UserController extends BaseController
 		$this->_flashMessenger->setNamespace('success')->addMessage('Użytkownik został usunięty');
 		$this->_helper->redirector('index', 'user');
 	}
+
+	function rememberAction()
+	{
+		$form = new Application_Form_User_Remember;
+
+		if (count($_POST)) {
+			if ($form->isValid($_POST)) {
+				$values = $form->getValues();
+				$userTable = new Application_Model_User;
+
+				$email = $values['email'];
+				$user = $userTable->findByEmail($email);
+
+				if (!$user) {
+					$this->_flashMessenger->setNamespace('error')->addMessage('Taki użytkownik nie istnieje');
+					$this->_helper->redirector('index', 'index');
+				}
+
+				if (!$user['email'] != $values['indeks']) {
+					$this->_flashMessenger->setNamespace('error')->addMessage('Taki użytkownik nie istnieje');
+					$this->_helper->redirector('index', 'index');
+				}
+
+				$newPassword = substr(md5(time()), 0, 6);
+
+				$userUpdate = array(
+					'password'	=> md5($newPassword . $user['salt'])
+				);
+
+				$userTable->update($userUpdate, 'id = ' . $user['id']);
+
+				$config = new Application_Model_Config;
+
+				$mail = new Zend_Mail();
+				$mail->setFrom($config->getConfig('email/from'));
+				$mail->setBodyHtml('Twoje nowe haslo to: ' . $newPassword);
+				$mail->addTo($user['email'], $user['name']);
+				$mail->setSubject($config->getConfig('email/newPassword/title'));
+				$mail->send();
+
+				$this->_flashMessenger->setNamespace('success')->addMessage('Hasło zostało zmienione');
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+
+		$this->view->form = $form;
+	}
 }

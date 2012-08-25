@@ -38,4 +38,9 @@ class Application_Model_User extends Zend_Db_Table implements Zend_Auth_Adapter_
         // wartość null.
         return new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null);
     }
+
+    public function findByEmail($email)
+    {
+        return $this->select()->where('email = ?', $email)->query()->fetch();
+    }
 }

@@ -79,6 +79,8 @@
 	         <a class="fontbold" href="#">Logowanie</a><br />
 				<form method="post" action="<?php echo $this->url(array('action' => 'login', 'controller' => 'user'), NULL, 'default') ?>">
 				    <?php echo $this->login_form ?>
+
+                    <span><a  href="<?php echo $this->url(array('action' => 'remember', 'controller' => 'user'), NULL, 'default') ?>">Zapomniałem hasło</a></span>
 				</form>
 	         </div>       
 	       </div>

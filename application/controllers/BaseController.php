@@ -50,5 +50,14 @@ class BaseController extends Zend_Controller_Action
 		$this->view->userData = $this->_userData;
 		
 		$this->view->flashMessager = $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+
+		$config = new Application_Model_Config;
+
+        $tr = new Zend_Mail_Transport_Smtp($config->getConfig('email/host'),
+                    array('auth' => 'login',
+                             'username' => $config->getConfig('email/username'),
+                             'password' => $config->getConfig('email/password')));
+
+        Zend_Mail::setDefaultTransport($tr);
 	}
 }
