@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 24 Sie 2012, 18:33
+-- Czas wygenerowania: 25 Sie 2012, 09:47
 -- Wersja serwera: 5.5.24
 -- Wersja PHP: 5.4.4-4~precise+1
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config` (`code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Zrzut danych tabeli `config`
@@ -40,7 +40,11 @@ CREATE TABLE IF NOT EXISTS `config` (
 
 INSERT INTO `config` (`id`, `code`, `value`) VALUES
 (1, 'site/name', 'System do tworzenia testow'),
-(2, 'site/type', 'closed');
+(2, 'site/type', 'closed'),
+(3, 'email/host', 'mail.bkielbasa.pl'),
+(4, 'email/username', 'spam@bkielbasa.pl'),
+(5, 'email/password', 'bk020488'),
+(6, 'email/from', 'spam@bkielbasa.pl');
 
 -- --------------------------------------------------------
 
@@ -254,21 +258,22 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `indeks` varchar(255) NOT NULL COMMENT 'numer indeksu',
   `password` varchar(64) NOT NULL,
   `salt` varchar(64) NOT NULL,
   `admin` tinyint(4) NOT NULL,
   `creditals` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Zrzut danych tabeli `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `salt`, `admin`, `creditals`) VALUES
-(1, 'admin', 'kontakt@bkielbasa.pl', '05f543b377ab634fdeaf7f61118710dd', '47bce5c74f589f4867dbd57e9ca9f808', 1, 1),
-(4, 'Jan Nowak', 'jan@nowak.pl', '35ae23a17160785d7b16431031f1bbf0', '08f8e0260c64418510cefb2b06eee5cd', 0, 0),
-(5, 'Karal Kowalksi', 'karol@kowalski.pl', '7c337972e922645aae69e28acf54b00f', '9df62e693988eb4e1e1444ece0578579', 0, 0);
+INSERT INTO `user` (`id`, `name`, `email`, `indeks`, `password`, `salt`, `admin`, `creditals`) VALUES
+(1, 'admin', 'kontakt@bkielbasa.pl', '', 'b4997b8f32800714cfd0989de7aecb1e', '47bce5c74f589f4867dbd57e9ca9f808', 1, 1),
+(4, 'Jan Nowak', 'jan@nowak.pl', '', '35ae23a17160785d7b16431031f1bbf0', '08f8e0260c64418510cefb2b06eee5cd', 0, 0),
+(5, 'Karal Kowalksi', 'karol@kowalski.pl', '', '7c337972e922645aae69e28acf54b00f', '9df62e693988eb4e1e1444ece0578579', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -283,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`,`group`),
   KEY `group` (`group`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Zrzut danych tabeli `user_group`
