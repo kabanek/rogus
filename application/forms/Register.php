@@ -6,19 +6,35 @@ class Application_Form_Register extends Zend_Form {
         $this->setMethod('post');
 
         $this->addElement('text', 'name', array(
-        		'label' => 'Nazwa użytkownika',
+        		'label' => 'Imię i nazwisko',
         		'required' => true,
         		'validators' => array(
         				array('StringLength', false, array(2, 50)),
-        				array('Db_NoRecordExists', false, array(
-        						'table' => 'user',
-        						'field' => 'name'
-        				))
         		)
        ));
         
         $this->getElement('name')
         	->setAttrib('required', 'required');
+        
+        $configTable = new Application_Model_Config;
+        $siteType = $configTable->getConfig('site/type');
+        
+        if ($siteType == 'closed') {
+        	$this->addElement('text', 'indeks', array(
+        			'label' => 'Numer indeksu',
+        			'required' => true,
+        			'validators' => array(
+        					array('StringLength', false, array(2, 50)),
+        					array('Db_NoRecordExists', false, array(
+        							'table' => 'user',
+        							'field' => 'indeks'
+        					))
+        			)
+        	));
+        	
+        	$this->getElement('indeks')
+        		->setAttrib('required', 'required');
+        }
                 
         $this->addElement('text', 'email', array(
             'label' => 'Adres email',
