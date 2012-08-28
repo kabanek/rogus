@@ -3,6 +3,10 @@
 class Application_Model_Question_Category extends Zend_Db_Table {
 	protected $_name = 'question_category';
 	
+	/**
+	 * pobiera wszystkie kategorie, których autorem jest user_id
+	 * @param unknown_type $user_id
+	 */
 	public function getUserCategories($user_id)
 	{
 		return $this->select()
@@ -35,6 +39,10 @@ class Application_Model_Question_Category extends Zend_Db_Table {
 			->fetch();
 	}
 	
+	/**
+	 * Pobiera wszystkie pytania, które należą do kategorii
+	 * @param unknown_type $cat_id
+	 */
 	public function getQuestions($cat_id)
 	{
 		$questionTable = new Application_Model_Question;
