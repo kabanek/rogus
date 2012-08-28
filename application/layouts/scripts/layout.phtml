@@ -70,8 +70,6 @@
      <div class="innerleft">
        <div class="product_division"><img src="<?php echo $this->baseUrl('images/product_division.jpg') ?>" alt="" border="0" /></div>
        
-       <div class="innerround"><img src="<?php echo $this->baseUrl('images/innerround.jpg') ?>" alt="" border="0" /></div>
-       
        <?php if (isset($this->login_form)) :?>
 	       <?php if (!$this->no_login_form) :?>
 	       <div class="innercontentleft">         
@@ -88,7 +86,7 @@
        <?php else: ?>
        <div class="innercontentleft">         
          <div class="main_con">
-         <a class="fontbold" href="#">Panel użytkownika</a><br />
+         
 			Witaj <?php echo $this->userData['name'] ?> !
 			
 			<ul id="mega-1" class="mega-menu">
