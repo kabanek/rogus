@@ -58,12 +58,26 @@ class UserController extends BaseController
 				$data = $_POST;
 				unset($data['submit'], $data['password2']);
 				$data['creditals'] = 0;
-				$data = md5(time());
+				$salt = md5(time());
+				$data['salt'] = $salt;
 				
 				$data['password'] = md5($data['password'] . $salt);
 				
 				$userTable = new Application_Model_User;
-				$userTable->insert($data);
+				$user_id = $userTable->insert($data);
+				
+				$code = $this->_getParam('code');
+				
+				if (!empty($code)) { // jeśli jest podany kod, to jest on dodawany do odpowiedniej grupy
+					$code = base64_decode($code);
+					$code = explode('-', $code);
+					
+					$userGroupTable = new Application_Model_User_Group;
+					$userGroupTable->insert(array(
+							'user'	=> $user_id,
+							'group'	=> $code[1]
+					));
+				}
 				
 				$this->_flashMessenger->setNamespace('success')->addMessage('Twoje konto zostało założone. Możesz się teraz zalogować');
 				$this->_helper->redirector('index', 'index');

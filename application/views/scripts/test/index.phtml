@@ -1,3 +1,25 @@
+<script type="text/javascript">
+	function showLinkBox(test_id)
+	{
+		$.getJSON('<?php echo $this->url(array('action' => 'links', 'controller' => 'test'), NULL, 'default') ?>/id/' + test_id, function(data) {
+			  var html = '';
+
+			  $.each(data, function(index, value){
+				  html += '<tr><td>' + value.name + '</td><td>' + value.link + '</td></tr>';
+			  });
+
+			  $('#link-box-body').html(html);
+
+			  $('#link-box').dialog({
+				  'modal': true,
+				  width: 600,
+			  });
+		});
+
+		return false;
+	}
+</script>
+
 <h2>Lista Twoich testów</h2>
 
 <table class="bluedream">
@@ -18,12 +40,29 @@
 			<td><?php echo $test['end_at']?></td>
 			<td><?php echo $test['points']?> %</td>
 			<td>
-				<a href="<?php echo $this->url(array('action' => 'groups', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Wyniki</a>
-				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Edytuj</a>
-				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>" class="confirm">Usuń</a>
+				<a href="<?php echo $this->url(array('action' => 'groups', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Wyniki</a><br />
+				<a href="<?php echo $this->url(array('action' => 'edit', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>">Edytuj</a><br />
+				<?php if (!$test['open']): ?>
+				<a href="#" onclick="return showLinkBox('<?php echo $test['id'] ?>');">Link</a>
+				<?php endif ?>
+				<a href="<?php echo $this->url(array('action' => 'remove', 'controller' => 'test', 'id' => $test['id']), NULL, 'default') ?>" class="confirm">Usuń</a><br />
 				
 			</td>
 		</tr>
 	<?php endforeach ?>
 	</tbody>
 </table>
+
+<div id="link-box" title="Link do rejestracji" style="display: none">
+	<table>
+		<thead>
+			<tr>
+				<th>Nazwa grupy</th>
+				<th>Link rejestracyjny</th>
+			</tr>
+		</thead>
+		<tbody id="link-box-body">
+			
+		</tbody>
+	</table>
+</div>

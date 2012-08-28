@@ -743,4 +743,29 @@ class TestController extends BaseController
 		$this->view->groups = $groups;
 		$this->view->test = $test;
 	}
+	
+	function linksAction()
+	{
+		$id = $this->_getParam('id');
+		$groupTable = new Application_Model_Group;
+		$request = Zend_Controller_Front::getInstance()->getRequest();
+		
+		$result = array();
+		$groups = $groupTable->getUserGroups($this->_userData['id']);
+		
+		foreach ($groups as $group) {
+			$result[] = array(
+					'name'	=> $group['name'],
+					'link'	=> $request->getScheme() . '://' . $request->getHttpHost() . $this->view->url(array(
+							'controller'	=> 'user',
+							'action'		=> 'register',
+							'code'			=> base64_encode($id . '-' . $group['id'])
+					), 'default')
+			);
+		}
+		
+		echo json_encode($result);
+		
+		die;
+	}
 }
