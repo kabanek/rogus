@@ -162,7 +162,7 @@ class QuestionController extends BaseController
 						'category'	=> $_POST['category'],
 				);
 				
-				if (isset($_FILES['file'])) {
+				if (isset($_FILES['file']) && count($_FILES['file'])) {
 					$file_name = uniqid('question_');
 					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/' . $file_name);
 						
