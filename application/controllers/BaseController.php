@@ -48,6 +48,7 @@ class BaseController extends Zend_Controller_Action
 		}
 
 		$this->view->userData = $this->_userData;
+		$this->_session->userData = $this->_userData;
 		
 		$this->view->flashMessager = $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
 

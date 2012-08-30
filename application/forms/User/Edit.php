@@ -6,7 +6,7 @@ class Application_Form_User_Edit extends Zend_Form {
         $this->setMethod('post');
         
         $this->addElement('text', 'name', array(
-        		'label' => 'Uzytkownik',
+        		'label' => 'Imię i nazwisko',
         		'required' => true,
         ));
 
@@ -47,6 +47,24 @@ class Application_Form_User_Edit extends Zend_Form {
         ));
         
         $this->getElement('groups')->setRegisterInArrayValidator(false);
+        
+        $session = Zend_Registry::get('session');
+        
+        if ($session->userData['admin']) {
+	        $this->addElement('select', 'creditals', array(
+	            'label' => 'Uprawnienia',
+	            'required' => true,
+	        	'multiOptions'	=> array(
+	        			'0'	=> 'Uczeń',
+	        			'1'	=> 'Nauczyciel'
+	        	)
+	       ));
+	        
+	        $this->addElement('checkbox', 'admin', array(
+	        		'label' => 'Uprawnienia administratora',
+	        		'required' => true,
+	        ));
+        }
 
         $this->addElement('submit', 'submit', array(
             'label' => 'Zapisz',

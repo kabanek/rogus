@@ -168,9 +168,11 @@ class UserController extends BaseController
 			}
 			
 			$form->setDefaults(array(
-					'name'	=> $user['name'],
-					'email'	=> $user['email'],
-					'groups'=> $groupIds
+					'name'		=> $user['name'],
+					'email'		=> $user['email'],
+					'creditals'	=> $user['creditals'],
+					'admin'		=> $user['admin'],
+					'groups'	=> $groupIds
 			));
 		}
 		
