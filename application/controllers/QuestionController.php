@@ -13,12 +13,6 @@ class QuestionController extends BaseController
 			$this->_helper->redirector('index', 'index');
 		}
 		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
-		}
-		
 		$categoryTable = new Application_Model_Question_Category();
 		
 		$categories = array();
@@ -84,12 +78,6 @@ class QuestionController extends BaseController
 			$this->_helper->redirector('index', 'index');
 		}
 		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
-		}
-		
 		$question = new Application_Model_Question();
 		
 		$this->view->questions = $question->getUserQuestions($this->_userData['id']);
@@ -102,12 +90,6 @@ class QuestionController extends BaseController
 	{
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
-		}
-		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
 		}
 		
 		$questionTable = new Application_Model_Question();
@@ -125,12 +107,6 @@ class QuestionController extends BaseController
 	{
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
-		}
-		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
 		}
 		
 		$questionTable = new Application_Model_Question;

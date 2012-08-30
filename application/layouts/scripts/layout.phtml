@@ -95,7 +95,6 @@
 					<ul>
 						<li><a href="<?php echo $this->url(array('action' => 'new', 'controller' => 'question'), NULL, 'default') ?>">Utwórz nowe pytanie</a></li>
 						<li><a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>">Twoje pytania</a></li>
-						<li><a href="<?php echo $this->url(array('action' => 'results', 'controller' => 'test'), NULL, 'default') ?>">Wyniki testów</a></li>
 					</ul>
 				</li>
 				
@@ -116,6 +115,7 @@
 					</ul>
 				</li>
 				
+				<?php if ($this->userData['admin'] || $this->userData['creditals'] > 0): ?>
 				<li>
 					<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'group'), NULL, 'default') ?>">Grupy użytkowników</a>
 					<ul>
@@ -131,12 +131,18 @@
 					</ul>
 				</li>
 				
+				<?php endif ?>
+				
+				<?php if ($this->userData['admin']): ?>
+				
 				<li>
 					<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'config'), NULL, 'default') ?>">Konfiguracja</a>
 					<ul>
 						<li><a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'config'), NULL, 'default') ?>">Konfiguracja serwisu</a></li>
 					</ul>
 				</li>
+				
+				<?php endif ?>
 			</ul>
          </div>       
        </div>

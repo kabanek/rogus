@@ -13,12 +13,6 @@ class CategoryController extends BaseController
 			$this->_helper->redirector('index', 'index');
 		}
 		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
-		}
-		
 		$form = new Application_Form_Category_New;
 		
 		if (count($_POST)) {
@@ -47,12 +41,6 @@ class CategoryController extends BaseController
 			$this->_helper->redirector('index', 'index');
 		}
 		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
-		}
-		
 		$categoryTable = new Application_Model_Question_Category();
 		
 		$this->view->categories = $categoryTable->getUserCategories($this->_userData['id']);
@@ -65,12 +53,6 @@ class CategoryController extends BaseController
 	{
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
-		}
-		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
 		}
 		
 		$questionTable = new Application_Model_Question_Category();
@@ -87,12 +69,6 @@ class CategoryController extends BaseController
 	{
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
-		}
-		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
 		}
 		
 		$questionCategoryTable = new Application_Model_Question_Category;
@@ -130,12 +106,6 @@ class CategoryController extends BaseController
 	{
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
-		}
-		
-		if ($this->_config->getConfig('site/type') == 'closed') {
-			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
-				$this->_helper->redirector('index', 'index');
-			}
 		}
 		
 		$questionCategoryTable = new Application_Model_Question_Category;
