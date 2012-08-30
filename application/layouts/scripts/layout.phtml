@@ -52,7 +52,9 @@
                  <?php if ($this->loggedIn):?>
                   <li><a href="<?php echo $this->url(array('action' => 'logout', 'controller' => 'user'), NULL, 'default') ?>" class="services">&nbsp;</a></li>
                  <?php else:?>
-                 <li><a href="<?php echo $this->url(array('action' => 'register', 'controller' => 'user'), NULL, 'default') ?>" class="solutions">&nbsp;</a></li>
+	                 <?php if ($this->config->getConfig('site/type') == 'open'):?>
+	                 <li><a href="<?php echo $this->url(array('action' => 'register', 'controller' => 'user'), NULL, 'default') ?>" class="solutions">&nbsp;</a></li>
+	                 <?php endif ?>
                  <?php endif ?>
                 </ul>     
             </div>
