@@ -16,8 +16,25 @@ class Application_Model_Question_Option extends Zend_Db_Table {
 			->fetchAll();
 	}
 	
+	/**
+	 * Usuwa wszystkie odpowiedzi do pytania
+	 * @param unknown_type $question_id
+	 */
 	public function deleteAllOptions($question_id)
 	{
 		$this->delete('question = ' . $question_id);
+	}
+	
+	/**
+	 * Pobiera tylko poprawne odpowiedzi w pytaniu
+	 * @param int $question_id
+	 */
+	function getOnlyCorrectOptions($question_id)
+	{
+		return $this->select()->where('question = ?', $question_id)
+			->where('correct = ?', 1)
+			->order('id ASC')
+			->query()
+			->fetchAll();
 	}
 }

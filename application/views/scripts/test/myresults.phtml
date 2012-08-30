@@ -1,0 +1,101 @@
+<script>
+	function showAnswers(test_id)
+	{
+		$.getJSON('<?php echo $this->url(array('action' => 'myresultstest', 'controller' => 'test'), NULL, 'default') ?>/test/' + test_id, function(data) {
+			var html = '';
+
+			$.each(data, function (index, d){
+				html += '<tr>';
+				html += '<td>' + d.text + '</td>';
+				html += '<td>';
+
+				$.each (d.answers, function (ind, ans){
+					html += "" + ans + '<br />';
+				});
+				
+				html += '</td>';
+
+				html += '<td>';
+
+				$.each (d.correct, function (ind, ans){
+					html += ans + '<br />';
+				});
+				
+				html += '</td>';
+				html += '</tr>';
+			});
+
+
+			$('#answers-list-body').html(html);
+			
+			$('#answers-list').dialog({
+				modal: true,
+				width: 800,
+			});
+		});
+		
+		return false;
+	}
+</script>
+
+<h1>Wyniki testów</h1>
+
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Nazwa testu</th>
+			<th>Rozpoczęty</th>
+			<th>Wynik</th>
+			<th>Ocena</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($this->tests as $test): ?>
+		<tr>
+			<td><?php echo $test['name']?></td>
+			<td><?php echo $test['started_at']?></td>
+			<td><?php echo $test['result']?> %</td>
+			<td>
+		<?php
+			if (!empty($test['3_5'])) {
+				if ($test['5'] <= $test['result']) {
+					echo "5";
+				} elseif  ($test['4_5'] <= $test['result']) {
+					echo "4.5";
+				} elseif  ($test['4'] <= $test['result']) {
+					echo "4";
+				} elseif  ($test['3_5'] <= $test['result']) {
+					echo "3.5";
+				} elseif  ($test['points'] <= $test['result']) {
+					echo "3";
+				} else {
+					echo "2.0";
+				}
+			} else {
+				if ($test['result'] >= $test['points']) {
+					echo "Zaliczone";
+				} else {
+					echo "Niezaliczone";
+				}
+			}
+		?>
+			</td>
+			<td><a href="#" onclick="return showAnswers(<?php echo $test['user_test_id']?>)">Odpowiedzi</a></td>
+		</tr>
+	<?php endforeach?>
+	</tbody>
+</table>
+
+<div id="answers-list" style="display: none" title="Twoje odpowiedzi">
+	<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Pytanie</th>
+			<th>Odpowiedzi</th>
+			<th>Poprawne</th>
+		</tr>
+	</thead>
+		<tbody id="answers-list-body"></tbody>
+	</table>
+</div>

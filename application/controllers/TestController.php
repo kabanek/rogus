@@ -638,6 +638,16 @@ class TestController extends BaseController
 	 */
 	function groupsAction()
 	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
 		$testTable = new Application_Model_Test();
 		$userTestTable = new Application_Model_User_Test();
 		
@@ -746,6 +756,16 @@ class TestController extends BaseController
 	
 	function linksAction()
 	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if ($this->_userData['creditals'] != 1 && $this->_userData['admin'] != 1) {
+				$this->_helper->redirector('index', 'index');
+			}
+		}
+		
 		$id = $this->_getParam('id');
 		$groupTable = new Application_Model_Group;
 		$request = Zend_Controller_Front::getInstance()->getRequest();
@@ -767,5 +787,62 @@ class TestController extends BaseController
 		echo json_encode($result);
 		
 		die;
+	}
+	
+	/**
+	 * Wyniki testów użytkownika
+	 */
+	function myresultsAction()
+	{
+		if (!$this->_loggedIn) {
+			$this->_helper->redirector('index', 'index');
+		}
+		
+		$userTestTable = new Application_Model_User_Test;
+		
+		$this->view->tests = $userTestTable->getTests($this->_userData['id']);
+	}
+	
+	function myresultstestAction()
+	{
+		$testUserId = $this->_getParam('test');
+		$result = array();
+		
+		$userTestTable = new Application_Model_User_Test;
+		$userTestAnswerTable = new Application_Model_User_Test_Answer;
+		$questionOptionTable = new Application_Model_Question_Option;
+		
+		$questions = $userTestTable->getQuestionsInTest($testUserId);
+		
+		foreach ($questions as $question) {
+			$questionData = array(
+					'text'	=> $question['text'],
+					'correct' => array(),
+					'answers' => array(),
+			);
+			
+			$corrects = $questionOptionTable->getOnlyCorrectOptions($question['question']);
+			
+			foreach ($corrects as $correct) {
+				$questionData['correct'][] = $correct['text'];
+			}
+			
+			$answers = $userTestAnswerTable->getAnswers($testUserId, $question['question']);
+							
+			foreach ($answers as $correct) {
+				$questionData['answers'][] = $correct['text'];
+			}
+			
+			$questionData['ok'] = $correct == $answers;
+									
+			$result[] = $questionData;
+		}
+		
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Content-type: application/json');
+		
+		
+		die(json_encode($result));
 	}
 }

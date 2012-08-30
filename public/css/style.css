@@ -823,7 +823,6 @@ table.bluedream {
     color: #363636;
 }
 .bluedream tbody td + td + td + td a {
-    background-image: url("bullet_blue.png");
     background-position: left center;
     background-repeat: no-repeat;
     color: #03476F;
@@ -911,7 +910,6 @@ div.error {
     position: relative;
 }
 .mega-menu li a .dc-mega-icon {
-    background: url("../images/arrow_right.png") no-repeat scroll 0 0 transparent;
     display: block;
     height: 8px;
     position: absolute;
@@ -972,7 +970,6 @@ div.error {
     text-shadow: none;
 }
 .mega-menu .sub li.mega-hdr li a {
-    background: url("../images/arrow_white.png") no-repeat scroll 5px 8px transparent;
     font-weight: normal;
     padding: 4px 5px 4px 20px;
 }
@@ -992,7 +989,6 @@ div.error {
     width: 150px;
 }
 .mega-menu li .sub-container.non-mega li a {
-    background: url("../images/arrow_white.png") no-repeat scroll 7px 10px transparent;
     padding: 7px 5px 7px 22px;
 }
 .mega-menu li .sub-container.non-mega li a:hover {
