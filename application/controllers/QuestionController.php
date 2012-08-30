@@ -38,7 +38,7 @@ class QuestionController extends BaseController
 				$questionData['user'] 		= $this->_userData['id'];
 				$questionData['category'] 	= $_POST['category'];
 				
-				if (isset($_FILES['file'])) {
+				if (isset($_FILES['file']) && count($_FILES['file'])) {
 					$file_name = uniqid('question_');
 					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/data/' . $file_name);
 					

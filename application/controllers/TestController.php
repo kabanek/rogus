@@ -381,13 +381,27 @@ class TestController extends BaseController
 				$op[$o['id']]	= $o['text'];
 			}
 			
+			$questionText = $question['text'];
+			
+			if ($question['file']) {
+				$questionText .= '<br /><br /><b><a href="' . $this->view->url(array(
+						'controller'	=> 'question',
+						'action'		=> 'attachement',
+						'id'			=> $question['question']
+				)) .'"> Pobierz załącznik</a></b><br /><br />';
+			}
+			
 			// dodaję do formularza listę z checkboxami, w których są opcje odpowiedzi dla pytania
 			$form->addElement('multiCheckbox', 'answer', array(
-					'label'	=> $question['text'],
+					'label'	=> $questionText,
 		        	'required' => true,
 					'extended'	=> true,
-					'multiOptions'	=> $op
+					'multiOptions'	=> $op,
 		    ));
+			
+			$form->getElement('answer')->addDecorator('Label', array(
+					'escape' => false
+			));
 			
 			if (count($_POST)) { // jeśli formularz został wysłany
 				if ($form->isValid($_POST)){	// i czy jest prawidłowy (czyli np została zaznaczona co najmniej jedna opcja)
@@ -479,7 +493,7 @@ class TestController extends BaseController
 						$testData['result'] = $testUser['result'] + $percent;
 						
 						$testUserTable->update($testData, 'id = ' . $testUser['id']);
-						$this->_flashMessenger->setNamespace('success')->addMessage('Test roztał ukończony');
+						$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony');
 						$this->_helper->redirector('index', 'index');
 					} else {
 						$testData['current_question'] = $testUser['current_question'] + 1;
@@ -508,11 +522,25 @@ class TestController extends BaseController
 				foreach ($options as $o) {
 					$op[$o['id']]	= $o['text'];
 				}
+				
+				$questionText = $question['text'];
+				
+				if ($question['file']) {
+					$questionText .= '<br /><br /><b><a href="' . $this->view->url(array(
+							'controller'	=> 'question',
+							'action'		=> 'attachement',
+							'id'			=> $question['question']
+					)) .'"> Pobierz załącznik</a></b><br /><br />';
+				}
 					
 				$form->addElement('multiCheckbox', 'answer_' . $question['id'], array(
-						'label'	=> $question['text'],
+						'label'	=> $questionText,
 						'required' => true,
 						'multiOptions'	=> $op
+				));
+				
+				$form->getElement('answer_' . $question['id'])->addDecorator('Label', array(
+						'escape' => false
 				));
 			}
 			
