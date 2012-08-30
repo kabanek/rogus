@@ -475,8 +475,8 @@ class TestController extends BaseController
 						$testData['result'] = $testUser['result'] + $percent;
 						
 						$testUserTable->update($testData, 'id = ' . $testUser['id']);
-						$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony');
-						$this->_helper->redirector('index', 'index');
+						$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony. Twój wynik to: ' . $testData['result'] . ' %');
+						$this->_helper->redirector('myresults', 'test');
 					} else {
 						$testData['current_question'] = $testUser['current_question'] + 1;
 					}
@@ -607,8 +607,8 @@ class TestController extends BaseController
 					
 					$testUserTable->update($data, 'id = ' . $testUser['id']);
 					
-					$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony');
-					$this->_helper->redirector('index', 'index');
+					$this->_flashMessenger->setNamespace('success')->addMessage('Test został ukończony. Twój wynik to: ' . $percent . ' %');
+					$this->_helper->redirector('myresults', 'test');
 				}
 			}
 		}
