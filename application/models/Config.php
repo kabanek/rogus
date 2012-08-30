@@ -5,6 +5,11 @@ class Application_Model_Config extends Zend_Db_Table {
 
 	protected static $_configs = NULL;
 
+	/**
+	 * pobiera wartość konfiguracji o $code kluczu
+	 * @param string $code
+	 * @return string
+	 */
 	public function getConfig($code) {
 		if (is_null(self::$_configs)) {
 			$configTable = new Application_Model_Config;

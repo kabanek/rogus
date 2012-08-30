@@ -1,0 +1,23 @@
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Klucz</th>
+			<th>Wartość</th>
+			<th></th>
+		</tr>
+	</thead>
+	
+	<tbody>
+	<?php foreach ($this->configs as $config): ?>
+		<tr>
+			<td><?php echo $config['code']?></td>
+			<td><?php echo $config['value']?></td>
+			<td><a href="<?php echo $this->url(array(
+					'controller'	=> 'config',
+					'action'		=> 'edit',
+					'id'			=> $config['id'],
+			))?>">Edytuj</a></td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>
