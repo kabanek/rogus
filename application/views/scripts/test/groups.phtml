@@ -34,47 +34,22 @@ $(document).ready(function(){
 	});
 </script>
 
-<h2>Statystyki pytań</h2>
-<?php foreach ($group['stats']['questions'] as $quest): ?>
-	<h4><?php echo $quest['text'] ?></h4>
-	<div id="question_stats_<?php echo $i ?>_stats-<?php echo $quest['id'] ?>">
-	
-	</div>
-	
-<script language="javascript">
-$(document).ready(function(){
-	  var data = [
-	    ['Poprawnie odpowiedzieli', <?php echo $quest['correct'] ?>], ['Żle odpowiedzieli', <?php echo $quest['incorrect'] ?>]
-	  ];
-	  var plot1 = jQuery.jqplot ('question_stats_<?php echo $i ?>_stats-<?php echo $quest['id'] ?>', [data], 
-	    {
-	      seriesDefaults: {
-	        // Make this a pie chart.
-	        renderer: jQuery.jqplot.PieRenderer, 
-	        rendererOptions: {
-	          // Put data labels on the pie slices.
-	          // By default, labels show the percentage of the slice.
-	          showDataLabels: true
-	        }
-	      }, 
-	      legend: { show:true, location: 'e' },
-	      width: 10,
-	      height: 200
-	    }
-	  );
-	});
-</script>
-
-<?php endforeach ?>
-
 <h2>Statystyki odpowiedzi użytkowników</h2>
 
+<table class="bluedream">
+	<thead>
+		<tr>
+			<th>Imię i nazwisko</th>
+			<th>Wynik (%)</th>
+			<th>Ocena</th>
+		</tr>
+	</thead>
+	<tbody>
 <?php foreach ($group['stats']['users'] as $user): ?>
-<h3>Odpowiedzi użytkownika: <b><?php echo $user['name']?></b></h3>
-
-	<p>Ilość uzyskanych procent dobrych odpowiedzi: <span style="color: <?php if ($user['result'] >= $this->test['points']): ?>green<?php else: ?>red<?php endif ?>"><?php echo $user['result']?>%</span> (wymagane <?php echo $this->test['points']?>% żeby zaliczyć)</p>
-
-	<p>Uzyskana ocena: 
+	<tr>
+		<td><?php echo $user['name']?></td>
+		<td><span style="color: <?php if ($user['result'] >= $this->test['points']): ?>green<?php else: ?>red<?php endif ?>"><?php echo $user['result']?>%</span> (wymagane <?php echo $this->test['points']?>% żeby zaliczyć)</td>
+		<td>
 		<?php
 			if (!empty($this->test['3_5'])) {
 				if ($this->test['5'] <= $user['result']) {
@@ -98,19 +73,12 @@ $(document).ready(function(){
 				}
 			}
 		?>
-	</p>
+		</td>
+	</tr>
 
-	<p>Pytania oraz odpowiedzi na pytania: </p>
-	
-	<ul class="answers-list">
-	<?php foreach ($user['answers'] as $answer) :?>
-		<li>Na pytanie "<i><?php echo $answer['text'] ?></i>" użytkownik odpowiedział: <b><span style="color: <?php if ($answer['correct']): ?>green<?php else: ?>red<?php endif ?>"><?php echo $answer['answer_text'] ?></span> <?php if ($answer['correct']): ?>+<?php echo $answer['weight'] ?><?php else: ?>0<?php endif ?>/<?php echo $answer['weight'] ?> punktów</b></li>
-	<?php endforeach ?>
-	</ul>
-	
-	<hr />
-	
 <?php endforeach ?>
+	</tbody>
+</table>
 
 
 <?php ++$i; endforeach ?>
