@@ -42,22 +42,22 @@ class Application_Form_Test_New extends Zend_Form {
 
         $this->addElement('text', '3_5', array(
                 'label' => 'Od ilu procent test ocena 3.5 (w %)',
-                'required' => true,
+                'required' => false,
         ));
 
         $this->addElement('text', '4', array(
                 'label' => 'Od ilu procent test jest ocena 4 (w %)',
-                'required' => true,
+                'required' => false,
         ));
 
         $this->addElement('text', '4_5', array(
                 'label' => 'Od ilu procent test jest ocena 4.5 (w %)',
-                'required' => true,
+                'required' => false,
         ));
 
         $this->addElement('text', '5', array(
                 'label' => 'Od ilu procent test jest ocena 5 (w %)',
-                'required' => true,
+                'required' => false,
         ));
         
         $this->addElement('text', 'start_at', array(
