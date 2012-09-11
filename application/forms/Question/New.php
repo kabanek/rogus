@@ -58,7 +58,11 @@ class Application_Form_Question_New extends Zend_Form {
         ));
 
         $this->addElement('submit', 'submit', array(
-            'label' => 'Dodaj',
+            'label' => 'Zapisz',
+        ));
+
+        $this->addElement('submit', 'submit2', array(
+            'label' => 'Zapisz i dodaj kolejne',
         ));
 
         $this->addElement('hash', 'csrf', array(

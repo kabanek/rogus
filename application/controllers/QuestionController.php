@@ -62,6 +62,10 @@ class QuestionController extends BaseController
 				
 				$this->_flashMessenger->setNamespace('success')->addMessage('Pytanie zostało dodane');
 				
+				if (isset($_POST['submit2'])) {
+					$this->_helper->redirector('new', 'question');
+				}
+
 				$this->_helper->redirector('index', 'question');
 			}
 		}
