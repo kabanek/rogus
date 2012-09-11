@@ -140,7 +140,7 @@ class QuestionController extends BaseController
 				
 				if (isset($_FILES['file']) && count($_FILES['file'])) {
 					$file_name = uniqid('question_');
-					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/' . $file_name);
+					move_uploaded_file($_FILES['file']['tmp_name'], BASE_PATH . '/data/' . $file_name);
 						
 					$data['file'] = $file_name;
 					$data['file_mime'] = mime_content_type($_FILES['file']['tmp_name']);
@@ -202,11 +202,9 @@ class QuestionController extends BaseController
 			
 			header('Content-type: ' . $question['file_mime']);
 			
-			// It will be called downloaded.pdf
-			header('Content-Disposition: attachment; filename="' . $question['file_name'] . '"');
-			
 			// The PDF source is in original.pdf
 			readfile(BASE_PATH . '/data/' . $question['file']);
+			die;
 		}
 		
 		die;

@@ -998,3 +998,7 @@ div.error {
 #mega-1 .sub li {
     left: 10px;
 }
+
+.question-atachement {
+    max-width: 300px;
+}

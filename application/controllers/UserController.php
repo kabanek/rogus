@@ -52,6 +52,15 @@ class UserController extends BaseController
 		$form = new Application_Form_Register;
 		
 		$request = $this->getRequest();
+
+		$code = $this->_getParam('code');
+
+		if ($this->_config->getConfig('site/type') == 'closed') {
+			if (!$code) {
+				$this->_flashMessenger->setNamespace('error')->addMessage('Rejestracja jest wyłączona. Proszę o zwrócenie się do nauczyciela bądź administratora w celu dodania konta');
+				$this->_helper->redirector('index', 'index');
+			}
+		}
 		
 		if (count($_POST)) {
 			if ($form->isValid($_POST)) {
@@ -65,8 +74,6 @@ class UserController extends BaseController
 				
 				$userTable = new Application_Model_User;
 				$user_id = $userTable->insert($data);
-				
-				$code = $this->_getParam('code');
 				
 				if (!empty($code)) { // jeśli jest podany kod, to jest on dodawany do odpowiedniej grupy
 					$code = base64_decode($code);

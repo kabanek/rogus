@@ -508,11 +508,11 @@ class TestController extends BaseController
 				$questionText = $question['text'];
 				
 				if ($question['file']) {
-					$questionText .= '<br /><br /><b><a href="' . $this->view->url(array(
-							'controller'	=> 'question',
-							'action'		=> 'attachement',
-							'id'			=> $question['question']
-					)) .'"> Pobierz załącznik</a></b><br /><br />';
+				$questionText .= '<br /><br /><img class="question-atachement" src="' . $this->view->url(array(
+						'controller'	=> 'question',
+						'action'		=> 'attachement',
+						'id'			=> $question['question']
+				)) .'"/ ><br /><br />';
 				}
 					
 				$form->addElement('multiCheckbox', 'answer_' . $question['id'], array(
