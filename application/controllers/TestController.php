@@ -727,7 +727,7 @@ class TestController extends BaseController
 			
 			// statystyki per user
 			$users = $userTestTable->getAdapter()
-				->query('SELECT *, u.id as user_id FROM user_test as ut LEFT JOIN user as u ON u.id = ut.user WHERE ut.test = ' . $test_id)
+				->query('SELECT *, u.id as user_id, ut.id as user_test_id FROM user_test as ut LEFT JOIN user as u ON u.id = ut.user WHERE ut.test = ' . $test_id)
 				->fetchAll();
 			
 			$usersData = array();
@@ -752,6 +752,7 @@ class TestController extends BaseController
 						'name'		=> $user['name'],
 						'result'	=> $user['result'],
 						'answers'	=> $answersData,
+						'user_test_id'	=> $user['user_test_id']
 				);
 			}
 			
