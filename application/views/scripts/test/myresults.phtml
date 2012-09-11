@@ -1,8 +1,51 @@
+<link class="include" rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl('css/jquery/jqplot/jquery.jqplot.min.css') ?>" />
+<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/jquery.jqplot.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/plugins/jqplot.pieRenderer.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/plugins/jqplot.donutRenderer.min.js') ?>"></script>
+
 <script>
+function equals( x, y ) {
+  if ( x === y ) return true;
+    // if both x and y are null or undefined and exactly the same
+
+  if ( ! ( x instanceof Object ) || ! ( y instanceof Object ) ) return false;
+    // if they are not strictly equal, they both need to be Objects
+
+  if ( x.constructor !== y.constructor ) return false;
+    // they must have the exact same prototype chain, the closest we can do is
+    // test there constructor.
+
+  for ( var p in x ) {
+    if ( ! x.hasOwnProperty( p ) ) continue;
+      // other properties were tested using x.constructor === y.constructor
+
+    if ( ! y.hasOwnProperty( p ) ) return false;
+      // allows to compare x[ p ] and y[ p ] when set to undefined
+
+    if ( x[ p ] === y[ p ] ) continue;
+      // if they have the same strict value or identity then they are equal
+
+    if ( typeof( x[ p ] ) !== "object" ) return false;
+      // Numbers, Strings, Functions, Booleans must be strictly equal
+
+    if ( ! equals( x[ p ],  y[ p ] ) ) return false;
+      // Objects and Arrays must be tested recursively
+  }
+
+  for ( p in y ) {
+    if ( y.hasOwnProperty( p ) && ! x.hasOwnProperty( p ) ) return false;
+      // allows x[ p ] to be set to undefined
+  }
+  return true;
+}
+
 	function showAnswers(test_id)
 	{
 		$.getJSON('<?php echo $this->url(array('action' => 'myresultstest', 'controller' => 'test'), NULL, 'default') ?>/test/' + test_id, function(data) {
 			var html = '';
+
+			var correct = 0;
+			var incorrect = 0;
 
 			$.each(data, function (index, d){
 				html += '<tr>';
@@ -20,11 +63,16 @@
 				$.each (d.correct, function (ind, ans){
 					html += ans + '<br />';
 				});
+
+				if (equals(d.answers, d.correct)) {
+					++correct;
+				} else {
+					++incorrect;
+				}
 				
 				html += '</td>';
 				html += '</tr>';
 			});
-
 
 			$('#answers-list-body').html(html);
 			
@@ -32,6 +80,27 @@
 				modal: true,
 				width: 800,
 			});
+
+			  var data = [
+			    ['Poprawnych', correct], ['Niepoprawnych', incorrect]
+			  ];
+			  
+			  var plot1 = jQuery.jqplot ('answers-list-graph', [data], 
+			    {
+			      seriesDefaults: {
+			        // Make this a pie chart.
+			        renderer: jQuery.jqplot.PieRenderer, 
+			        rendererOptions: {
+			          // Put data labels on the pie slices.
+			          // By default, labels show the percentage of the slice.
+			          showDataLabels: true
+			        }
+			      }, 
+			      legend: { show:true, location: 'e' },
+			      width: 10,
+			      height: 200
+			    }
+			  );
 		});
 		
 		return false;
@@ -88,6 +157,9 @@
 </table>
 
 <div id="answers-list" style="display: none" title="Twoje odpowiedzi">
+
+	<div id="answers-list-graph"></div>
+
 	<table class="bluedream">
 	<thead>
 		<tr>
