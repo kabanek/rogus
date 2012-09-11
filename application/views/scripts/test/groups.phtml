@@ -1,7 +1,7 @@
-<link class="include" rel="stylesheet" type="text/css" href="/css/jquery/jqplot/jquery.jqplot.min.css" />
-<script language="javascript" src="/js/jquery/jqplot/jquery.jqplot.min.js"></script>
-<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.pieRenderer.min.js"></script>
-<script type="text/javascript" src="/js/jquery/jqplot/plugins/jqplot.donutRenderer.min.js"></script>
+<link class="include" rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl('css/jquery/jqplot/jquery.jqplot.min.css') ?>" />
+<script language="javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/jquery.jqplot.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/plugins/jqplot.pieRenderer.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery/jqplot/plugins/jqplot.donutRenderer.min.js') ?>"></script>
 
 <?php $i = 0; foreach ($this->groups as $group): ?>
 <h1>Grupa '<?php echo $group['name']?>'</h1>
