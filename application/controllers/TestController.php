@@ -366,11 +366,11 @@ class TestController extends BaseController
 			$questionText = $question['text'];
 			
 			if ($question['file']) {
-				$questionText .= '<br /><br /><b><a href="' . $this->view->url(array(
+				$questionText .= '<br /><br /><img class="question-atachement" src="' . $this->view->url(array(
 						'controller'	=> 'question',
 						'action'		=> 'attachement',
 						'id'			=> $question['question']
-				)) .'"> Pobierz załącznik</a></b><br /><br />';
+				)) .'"/ ><br /><br />';
 			}
 			
 			// dodaję do formularza listę z checkboxami, w których są opcje odpowiedzi dla pytania
