@@ -52,4 +52,20 @@ class Application_Model_Question extends Zend_Db_Table {
 			->query()
 			->fetch();
 	}
+
+	/**
+     * Szuka pytanie używając jego ID
+     */
+    public function findById($id)
+    {
+        return $this->select()->where('id = ?', $id)->query()->fetch();
+    }
+
+    /**
+     * Usuwa pytanie używając jego ID
+     */
+    public function deleteById($id)
+    {
+        return $this->select()->delete('id = ' . $id);
+    }
 }

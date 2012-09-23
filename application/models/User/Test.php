@@ -21,4 +21,20 @@ class Application_Model_User_Test extends Zend_Db_Table {
 		$q = "SELECT * FROM user_test_question as utq LEFT JOIN question as quest ON utq.question = quest.id WHERE utq.user_test = $testUserId";
 		return $this->getAdapter()->query($q)->fetchAll();
 	}
+
+	/**
+     * Szuka krotkę używając jego ID
+     */
+    public function findById($id)
+    {
+        return $this->select()->where('id = ?', $id)->query()->fetch();
+    }
+
+    /**
+     * Usuwa krotkę używając jego ID
+     */
+    public function deleteById($id)
+    {
+        return $this->select()->delete('id = ' . $id);
+    }
 }

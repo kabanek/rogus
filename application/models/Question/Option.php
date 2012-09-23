@@ -37,4 +37,20 @@ class Application_Model_Question_Option extends Zend_Db_Table {
 			->query()
 			->fetchAll();
 	}
+
+	/**
+     * Szuka odpowieź do pytania używając jego ID
+     */
+    public function findById($id)
+    {
+        return $this->select()->where('id = ?', $id)->query()->fetch();
+    }
+
+    /**
+     * Usuwa odpowiedź do pytania używając jego ID
+     */
+    public function deleteById($id)
+    {
+        return $this->select()->delete('id = ' . $id);
+    }
 }

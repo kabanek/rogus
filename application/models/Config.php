@@ -22,4 +22,20 @@ class Application_Model_Config extends Zend_Db_Table {
 
 		return isset(self::$_configs[$code]) ? self::$_configs[$code] : NULL;
 	}
+
+	/**
+     * Szuka konfigurację używając jego ID
+     */
+    public function findById($id)
+    {
+        return $this->select()->where('id = ?', $id)->query()->fetch();
+    }
+
+    /**
+     * Usuwa konfigurację używając jego ID
+     */
+    public function deleteById($id)
+    {
+        return $this->select()->delete('id = ' . $id);
+    }
 }
