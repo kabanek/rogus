@@ -7,10 +7,11 @@ class Application_Model_Test extends Zend_Db_Table {
      * Pobiera wszystkie testy, których właścicielem jest $user_id
      * @param int $user_id
      */
-    public function getUserTests($user_id)
+    public function getUserTests($user_id, $order = 'id', $type='asc')
     {
     	return $this->select()
     		->where('user = ?', $user_id)
+            ->order($order . ' ' . $type)
     		->query()->fetchAll();
     }
 

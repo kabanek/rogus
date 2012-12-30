@@ -8,10 +8,11 @@ class Application_Model_Question extends Zend_Db_Table {
 	 * @param integer $user_id
 	 * @return array
 	 */
-	public function getUserQuestions($user_id)
+	public function getUserQuestions($user_id, $order = 'id', $type = 'asc')
 	{
 		return $this->select()
 			->where('user = ?', $user_id)
+            ->order($order . ' ' . $type)
 			->query()->fetchAll();
 	}
 	

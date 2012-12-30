@@ -1,9 +1,18 @@
 <table class="bluedream">
 	<thead>
 		<tr>
-			<th>Lp.</th>
-			<th>Treść pytania</th>
-			<th>Punkty</th>
+			<th>ID. 
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=id&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=id&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
+			<th>Treść pytania
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=text&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=text&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
+			<th>Punkty
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=weight&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'question'), NULL, 'default') ?>?order=weight&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
 			<th>Załącznik</th>
 			<th></th>
 		</tr>
@@ -12,7 +21,7 @@
 	<?php $i = 0 ?>
 	<?php foreach($this->questions as $question): ?>
 		<tr>
-			<td><?php echo ++$i ?></td>
+			<td><?php echo $question['id'] ?></td>
 			<td><?php echo $this->escape($question['text']) ?></td>
 			<td><?php echo $question['weight']?></td>
 			<td>

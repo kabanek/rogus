@@ -14,8 +14,11 @@ class TestController extends BaseController
 		}
 		
 		$testTable = new Application_Model_Test();
+
+		$order = isset($_GET['order']) ?  $_GET['order']: 'id';
+		$type = isset($_GET['type']) ?  $_GET['type']: 'ASC';
 		
-		$this->view->tests = $testTable->getUserTests($this->_userData['id']);
+		$this->view->tests = $testTable->getUserTests($this->_userData['id'], $order, $type);
 	}
 	
 	/**

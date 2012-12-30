@@ -42,8 +42,11 @@ class CategoryController extends BaseController
 		}
 		
 		$categoryTable = new Application_Model_Question_Category();
+
+		$order = isset($_GET['order']) ?  $_GET['order']: 'id';
+		$type = isset($_GET['type']) ?  $_GET['type']: 'ASC';
 		
-		$this->view->categories = $categoryTable->getUserCategories($this->_userData['id']);
+		$this->view->categories = $categoryTable->getUserCategories($this->_userData['id'], $order, $type);
 	}
 	
 	/**

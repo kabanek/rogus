@@ -3,7 +3,10 @@
 <table class="bluedream">
     <thead>
         <tr>
-            <th>Nazwa grupy</th>
+            <th>Nazwa grupy
+                <a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'group'), NULL, 'default') ?>?order=name&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+                <a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'group'), NULL, 'default') ?>?order=name&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+            </th>
             <th>Akcje</th>
         </tr>
     </thead>

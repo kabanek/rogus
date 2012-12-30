@@ -7,8 +7,11 @@ class GroupController extends BaseController
 	function indexAction()
 	{
 		$groupTable = new Application_Model_Group;
+
+		$order = isset($_GET['order']) ?  $_GET['order']: 'id';
+		$type = isset($_GET['type']) ?  $_GET['type']: 'ASC';
 		
-		$this->view->groups = $groupTable->getUserGroups($this->_userData['id']);
+		$this->view->groups = $groupTable->getUserGroups($this->_userData['id'], $order, $type);
 	}
 	
 	function newAction()

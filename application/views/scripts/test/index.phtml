@@ -25,10 +25,22 @@
 <table class="bluedream">
 	<thead>
 		<tr>
-			<th>Nazwa testu</th>
-			<th>Ważny od</th>
-			<th>Ważny do</th>
-			<th>Zdane od</th>
+			<th>Nazwa testu
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=name&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=name&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
+			<th>Ważny od
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=start_at&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=start_at&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
+			<th>Ważny do
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=end_at&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=end_at&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
+			<th>Zdane od
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=points&type=asc"><img src="<?php echo $this->baseUrl('images/arrow_up.gif') ?>" /></a>
+				<a href="<?php echo $this->url(array('action' => 'index', 'controller' => 'test'), NULL, 'default') ?>?order=points&type=desc"><img src="<?php echo $this->baseUrl('images/arrow_down.gif') ?>" /></a>
+			</th>
 			<th>Akcje</th>
 		</tr>
 	</thead>

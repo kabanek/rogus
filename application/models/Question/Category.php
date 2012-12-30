@@ -7,10 +7,11 @@ class Application_Model_Question_Category extends Zend_Db_Table {
 	 * pobiera wszystkie kategorie, których autorem jest user_id
 	 * @param unknown_type $user_id
 	 */
-	public function getUserCategories($user_id)
+	public function getUserCategories($user_id, $order = 'id', $type='asc')
 	{
 		return $this->select()
 			->where('user = ?', $user_id)
+			->order($order . ' ' . $type)
 			->query()
 			->fetchAll();
 	}

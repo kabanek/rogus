@@ -7,10 +7,11 @@ class Application_Model_Group extends Zend_Db_Table {
      * Pobiera grupy użytkownika
      * @return array
      */
-    public function getUserGroups($user_id)
+    public function getUserGroups($user_id, $order = 'id', $type='asc')
     {
         return $this->select()
             ->where('user = ?', $user_id)
+            ->order($order . ' ' . $type)
             ->query()
             ->fetchAll();
     }

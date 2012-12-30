@@ -81,10 +81,13 @@ class QuestionController extends BaseController
 		if (!$this->_loggedIn) {
 			$this->_helper->redirector('index', 'index');
 		}
+
+		$order = isset($_GET['order']) ?  $_GET['order']: 'id';
+		$type = isset($_GET['type']) ?  $_GET['type']: 'ASC';
 		
 		$question = new Application_Model_Question();
 		
-		$this->view->questions = $question->getUserQuestions($this->_userData['id']);
+		$this->view->questions = $question->getUserQuestions($this->_userData['id'], $order, $type);
 	}
 	
 	/**
