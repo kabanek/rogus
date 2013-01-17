@@ -97,6 +97,9 @@
        <div class="product_division"><img src="<?php echo $this->baseUrl('images/product_division.jpg') ?>" alt="" border="0" /></div>
        
        Do końca testu pozostało: <span id="timer-left-time">time</span>.
+       <?php if ($this->layout()->current_question): ?>
+       	<p>Pytanie: <?php echo $this->layout()->current_question ?> z <?php echo $this->layout()->count_questions ?> pytań</p>
+   		<?php endif ?>
               
        <div class="innerleft2"><img src="<?php echo $this->baseUrl('images/innerleft2.jpg') ?>" alt="" border="0" /></div>
               

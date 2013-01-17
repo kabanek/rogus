@@ -49,7 +49,6 @@ class Application_Model_Question extends Zend_Db_Table {
 	public function get($question_id, $user_id)
 	{
 		return $this->select()->where('id = ?', $question_id)
-			->where('user = ?', $user_id)
 			->query()
 			->fetch();
 	}

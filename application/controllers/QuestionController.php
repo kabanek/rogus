@@ -213,6 +213,8 @@ class QuestionController extends BaseController
 			readfile(BASE_PATH . '/data/' . $question['file']);
 			die;
 		}
+
+		var_dump($this->_getParam('id'));
 		
 		die;
 	}

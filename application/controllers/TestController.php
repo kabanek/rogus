@@ -356,6 +356,9 @@ class TestController extends BaseController
 			$q2 = 'SELECT *, quest.id as quest_id FROM question as quest LEFT JOIN user_test_question as utq ON utq.question = quest.id WHERE user_test = ' . $testUser['id'];
 			$questions = $questionTable->getAdapter()->query($q2)->fetchAll(); // pobieram wszystkie pytania
 			$question = $questions[$testUser['current_question'] - 1];
+
+			Zend_Layout::getMvcInstance()->assign('current_question', $testUser['current_question']);
+			Zend_Layout::getMvcInstance()->assign('count_questions', count($questions));
 						
 			$q = 'SELECT * FROM question_option WHERE question = ' . $question['quest_id'];
 			$options = $questionTable->getAdapter()->query($q)->fetchAll();
@@ -368,7 +371,7 @@ class TestController extends BaseController
 			
 			$questionText = $question['text'];
 			
-			if ($question['file']) {
+			if ($question['file'] && file_exists(BASE_PATH . '/data/' . $question['file'])) {
 				$questionText .= '<br /><br /><img class="question-atachement" src="' . $this->view->url(array(
 						'controller'	=> 'question',
 						'action'		=> 'attachement',
